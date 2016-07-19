@@ -1,26 +1,17 @@
-package com.scj.user.entity;
+package com.bean;
 
-import javax.persistence.*;
+import javax.persistence.Id;
 
 /**
  * Created by shengcj on 2016/7/19.
- * 弹幕的实体类，目前做成匿名的，后期可以改成实名发弹幕
  */
-@Entity
-@Table(name = "barrage")
-public class Barrage {
-    @Id
-    @GeneratedValue(strategy = GenerationType.AUTO )
-    private  Integer id;
+public class BarrageVO {
 
     //弹幕内容
     private String text;
 
     //弹幕颜色
     private String color;
-
-    //“0”为滚动 “1” 为顶部 “2”为底部
-    private String position;
 
     //“0”为小字 ”1”为大字
     private String size;
@@ -29,14 +20,6 @@ public class Barrage {
     //我现在弹幕的作用是个人博客相当于留言功能,所以时间存一份就行
     // 从0开始，不是实时弹幕 要实时可以用websocket 或者openfire
     private Integer time;
-
-    public Integer getId() {
-        return id;
-    }
-
-    public void setId(Integer id) {
-        this.id = id;
-    }
 
     public String getText() {
         return text;
@@ -68,13 +51,5 @@ public class Barrage {
 
     public void setTime(Integer time) {
         this.time = time;
-    }
-
-    public String getPosition() {
-        return position;
-    }
-
-    public void setPosition(String position) {
-        this.position = position;
     }
 }

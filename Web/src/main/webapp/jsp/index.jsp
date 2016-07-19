@@ -5,6 +5,9 @@
     <title>弹幕测试</title>
     <script src="${pageContext.request.contextPath}/scripts/jquery.js"></script>
     <script src="${pageContext.request.contextPath}/scripts/jquery.danmu.js"></script>
+    <script>
+        var contextPath ="${pageContext.request.contextPath}";
+    </script>
     <style>
         #danmuarea {
             position: relative;
@@ -51,6 +54,7 @@
     <button onclick="send_danmu()">发送弹幕</button>
     <br/>
     <button onclick="add()">固定测试弹幕</button>
+    <button onclick="test_insert()">插入策划</button>
 </div>
 
 <script src="${pageContext.request.contextPath}/scripts/scj.danmu.js"></script>

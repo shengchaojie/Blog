@@ -1,6 +1,7 @@
 /**
  * Created by shengcj on 2016/7/19.
  */
+
 $("danmu").danmu({
     height: "100%",  //弹幕区高度
     width: "100%" ,   //弹幕区宽度
@@ -26,6 +27,8 @@ $("#danmu").danmu("addDanmu",[
     ,{ text:"这是底部弹幕" , color:"red" ,size:1,position:2,time:3}
 ]);
 
+query();
+
 $('#danmu').danmu('danmuStart');
 
 function send_danmu()
@@ -45,4 +48,26 @@ function add() {
     var newd =
     {"text": "new2", "color": "green", "size": "1", "position": "0", "time": time};
     $('#danmu').danmu("addDanmu", newd);
+}
+
+function test_insert()
+{
+    var time =$('#danmu').data("nowTime")+1;
+    var newd =
+    {"text": "new2", "color": "green", "size": "1", "position": "0", "time": time};
+    $.post(contextPath+"/barrage/save",newd,function(data){
+        var object =eval(data);
+        alert(object.code);
+    });
+}
+
+function query()
+{
+    $.get(contextPath+"/barrage/getAll",function(data,status){
+        var danmu_from_sql=eval(data);
+        for (var i=0;i<danmu_from_sql.length;i++){
+            var danmu_ls=eval('('+danmu_from_sql[i]+')');
+            $('#danmu').danmu("addDanmu",danmu_ls);
+        }
+    });
 }
