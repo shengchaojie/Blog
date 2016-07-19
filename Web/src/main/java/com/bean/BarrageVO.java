@@ -21,6 +21,17 @@ public class BarrageVO {
     // 从0开始，不是实时弹幕 要实时可以用websocket 或者openfire
     private Integer time;
 
+    //“0”为滚动 “1” 为顶部 “2”为底部
+    private String position;
+
+    public String getPosition() {
+        return position;
+    }
+
+    public void setPosition(String position) {
+        this.position = position;
+    }
+
     public String getText() {
         return text;
     }
@@ -51,5 +62,15 @@ public class BarrageVO {
 
     public void setTime(Integer time) {
         this.time = time;
+    }
+
+    @Override
+    public String toString() {
+        return "BarrageVO{" +
+                "text='" + text + '\'' +
+                ", color='" + color + '\'' +
+                ", size='" + size + '\'' +
+                ", time=" + time +
+                '}';
     }
 }

@@ -2,11 +2,12 @@
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 <html>
 <head>
-    <title>弹幕测试</title>
+    <title>弹弹弹幕</title>
     <script src="${pageContext.request.contextPath}/scripts/jquery.js"></script>
     <script src="${pageContext.request.contextPath}/scripts/jquery.danmu.js"></script>
     <script>
         var contextPath ="${pageContext.request.contextPath}";
+        var port ="${pageContext.request.serverPort}";
     </script>
     <style>
         #danmuarea {
@@ -23,6 +24,10 @@
         }
         .center {
             text-align: center;
+        }
+        #danmu{
+            width: 800px;
+            height: 445px;
         }
     </style>
 </head>
@@ -53,8 +58,8 @@
     <input type="textarea" id="text" max=300/>
     <button onclick="send_danmu()">发送弹幕</button>
     <br/>
-    <button onclick="add()">固定测试弹幕</button>
-    <button onclick="test_insert()">插入策划</button>
+   <%-- <button onclick="add()">固定测试弹幕</button>
+    <button onclick="test_insert()">插入策划</button>--%>
 </div>
 
 <script src="${pageContext.request.contextPath}/scripts/scj.danmu.js"></script>

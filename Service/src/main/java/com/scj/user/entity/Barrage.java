@@ -77,4 +77,16 @@ public class Barrage {
     public void setPosition(String position) {
         this.position = position;
     }
+
+    @Override
+    public String toString() {
+        return "Barrage{" +
+                "id=" + id +
+                ", text='" + text + '\'' +
+                ", color='" + color + '\'' +
+                ", position='" + position + '\'' +
+                ", size='" + size + '\'' +
+                ", time=" + time +
+                '}';
+    }
 }

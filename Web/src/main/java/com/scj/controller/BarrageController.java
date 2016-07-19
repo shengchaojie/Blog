@@ -1,6 +1,7 @@
 package com.scj.controller;
 
 import com.bean.BarrageVO;
+import com.scj.common.util.ObjectUtil;
 import com.scj.user.entity.Barrage;
 import com.scj.user.service.BarrageService;
 import com.scj.user.service.UserService;
@@ -42,8 +43,10 @@ public class BarrageController {
         barrage.setSize(barrageVO.getSize());
         barrage.setText(barrageVO.getText());
         barrage.setTime(barrageVO.getTime());
-
+        barrage.setPosition(barrageVO.getPosition());
+        
         if (barrageService.saveBarrage(barrage)) {
+            // TODO: 2016/7/19 写一个返回封装类 
             return "({\"code\":\"0\",\"status\":\"success\"})";
         }
 
@@ -52,8 +55,9 @@ public class BarrageController {
 
     @RequestMapping(value = "/getAll",method = RequestMethod.GET)
     @ResponseBody
-    public List<Barrage> getAllBarrages()
+    public List<BarrageVO> getAllBarrages()
     {
-        return barrageService.getBarrages();
+        List<BarrageVO> barrageVOs = ObjectUtil.convertTo(barrageService.getBarrages(),BarrageVO.class);
+        return barrageVOs;
     }
 }
