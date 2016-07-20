@@ -1,68 +1,59 @@
-<%@ page contentType="text/html;charset=UTF-8" language="java" isELIgnored="false" %>
-<%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
+<%--
+  Created by IntelliJ IDEA.
+  User: shengcj
+  Date: 2016/7/20
+  Time: 16:50
+  To change this template use File | Settings | File Templates.
+--%>
+<%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <html>
 <head>
-    <title>弹弹弹幕</title>
-    <script src="${pageContext.request.contextPath}/scripts/jquery.js"></script>
-    <script src="${pageContext.request.contextPath}/scripts/jquery.danmu.js"></script>
-    <script>
-        var contextPath ="${pageContext.request.contextPath}";
-        var port ="${pageContext.request.serverPort}";
-    </script>
-    <style>
-        #danmuarea {
-            position: relative;
-            background: black;
-            width: 800px;
-            height: 445px;
-            margin-left: auto;
-            margin-right: auto;
-        }
-        .ctr {
-            font-size: 1em;
-            line-height: 2em;
-        }
-        .center {
-            text-align: center;
-        }
-        #danmu{
-            width: 800px;
-            height: 445px;
-        }
-    </style>
+    <title>首页</title>
 </head>
-<body class="center">
-<%--<h2>Hello World!${sessionScope.username}</h2>
-<a href="${pageContext.request.contextPath}/user/view/login">login</a><br/>
-<a href="${pageContext.request.contextPath}/user/view/register">register</a>--%>
-<div id="danmuarea">
-    <div id="danmu"></div>
+<body>
+<jsp:include page="header.jsp"/>
+<div class="container">
+    <div class="row">
+        <div class="col-md-8 col-md-offset-2">
+            <div id="myCarousel" class="carousel slide">
+                <!-- 轮播（Carousel）指标 -->
+                <ol class="carousel-indicators">
+                    <li data-target="#myCarousel" data-slide-to="0" class="active"></li>
+                    <li data-target="#myCarousel" data-slide-to="1"></li>
+                    <li data-target="#myCarousel" data-slide-to="2"></li>
+                </ol>
+                <!-- 轮播（Carousel）项目 -->
+                <div class="carousel-inner">
+                    <div class="item active">
+                        <div class="jumbotron">
+                            <h1>Hello, world!</h1>
+                            <p>...</p>
+                            <p><a class="btn btn-primary btn-lg" href="#" role="button">Learn more</a></p>
+                        </div>
+                    </div>
+                    <div class="item">
+                        <div class="jumbotron">
+                            <h1>Hello, world!</h1>
+                            <p>...</p>
+                            <p><a class="btn btn-primary btn-lg" href="#" role="button">Learn more</a></p>
+                        </div>
+                    </div>
+                    <div class="item">
+                        <div class="jumbotron">
+                            <h1>Hello, world!</h1>
+                            <p>...</p>
+                            <p><a class="btn btn-primary btn-lg" href="#" role="button">Learn more</a></p>
+                        </div>
+                    </div>
+                </div>
+                <!-- 轮播（Carousel）导航 -->
+                <a class="carousel-control left" href="#myCarousel"
+                   data-slide="prev">&lsaquo;</a>
+                <a class="carousel-control right" href="#myCarousel"
+                   data-slide="next">&rsaquo;</a>
+            </div>
+        </div>
+    </div>
 </div>
-<div class="ctr">
-    <select name="color" id="color">
-        <option value="white">白色</option>
-        <option value="red">红色</option>
-        <option value="green">绿色</option>
-        <option value="blue">蓝色</option>
-        <option value="yellow">黄色</option>
-    </select>
-    <select name="text_size" id="text_size">
-        <option value="1">大文字</option>
-        <option value="0">小文字</option>
-    </select>
-    <select name="position" id="position">
-        <option value="0">滚动</option>
-        <option value="1">顶端</option>
-        <option value="2">底端</option>
-    </select>
-    <input type="textarea" id="text" max=300/>
-    <button onclick="send_danmu()">发送弹幕</button>
-    <br/>
-   <%-- <button onclick="add()">固定测试弹幕</button>
-    <button onclick="test_insert()">插入策划</button>--%>
-</div>
-
-<script src="${pageContext.request.contextPath}/scripts/scj.danmu.js"></script>
-
 </body>
 </html>

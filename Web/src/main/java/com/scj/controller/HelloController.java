@@ -30,4 +30,10 @@ public class HelloController {
     {
         return "index";
     }
+
+    @RequestMapping("/danmu")
+    public String danmu()
+    {
+        return "danmu";
+    }
 }
