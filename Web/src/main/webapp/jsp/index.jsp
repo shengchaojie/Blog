@@ -8,7 +8,7 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <html>
 <head>
-    <title>首页</title>
+    <title>首页2</title>
 </head>
 <body>
 <jsp:include page="header.jsp"/>
