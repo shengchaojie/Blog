@@ -28,6 +28,7 @@
 
 
     <mvc:resources mapping="/scripts/**" location="/scripts/"></mvc:resources>
+    <mvc:resources mapping="/bootstrap/**" location="/bootstrap/"></mvc:resources>
 <!--
     <entity id="exceptionHandler" class="com.scj.common.exception.MyExceptionHandler"/>
 -->
