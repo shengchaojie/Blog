@@ -51,6 +51,6 @@
     </bean>
 
     <bean class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">
-        <property name="location" value="classpath:db.properties"/>
+        <property name="location" value="classpath:database.properties"/>
     </bean>
 </beans>
