@@ -21,14 +21,14 @@ public class InterfaceFrequencyInterceptor implements HandlerInterceptor {
 
     @Override
     public boolean preHandle(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse, Object o) throws Exception {
-        String url =httpServletRequest.getContextPath();
+        String url =httpServletRequest.getRequestURI();
         String ipAddress =httpServletRequest.getRemoteAddr();
 
         InterfaceInfo interfaceInfo =new InterfaceInfo(url,new Date(),ipAddress);
 
         //先插入接口信息map，然后进行统一ip调用频率控制
         List<InterfaceInfo> interfaceInfoList =null;
-        if((interfaceInfoList =interfaceInfoMap.get(url).get(ipAddress))==null)
+        if(interfaceInfoMap.get(url)==null||(interfaceInfoList =interfaceInfoMap.get(url).get(ipAddress))==null)
         {
             //接口第一次调用不做判断
             Map<String,List<InterfaceInfo>> ipMap =new HashMap<>();
@@ -41,6 +41,7 @@ public class InterfaceFrequencyInterceptor implements HandlerInterceptor {
             //拿到最新一条信息
             InterfaceInfo lastestInfo =interfaceInfoList.get(interfaceInfoList.size()-1);
             long interval = interfaceInfo.getInvokeTime().getTime() -lastestInfo.getInvokeTime().getTime();
+            System.out.println("interval:"+interval);
             if(interval<INTERFACE_INVOKE_INTERVAL)
             {
                 OutputStream outputStream= httpServletResponse.getOutputStream();
@@ -48,6 +49,8 @@ public class InterfaceFrequencyInterceptor implements HandlerInterceptor {
                 outputStream.flush();
                 outputStream.close();
                 return false;
+            }else {
+                interfaceInfoList.add(interfaceInfo);
             }
         }
 
