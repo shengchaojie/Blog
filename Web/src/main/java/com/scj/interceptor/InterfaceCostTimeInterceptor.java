@@ -4,6 +4,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.web.servlet.HandlerInterceptor;
 import org.springframework.web.servlet.ModelAndView;
+import org.springframework.web.servlet.handler.HandlerInterceptorAdapter;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -14,7 +15,7 @@ import java.util.Date;
  * Created by shengcj on 2016/7/28.
  * 接口调用数据日志 拦截器
  */
-public class InterfaceCostTimeInterceptor implements HandlerInterceptor{
+public class InterfaceCostTimeInterceptor extends HandlerInterceptorAdapter{
     private static final Logger LOGGER = LoggerFactory.getLogger(InterfaceCostTimeInterceptor.class);
 
     private Date date;
@@ -30,11 +31,6 @@ public class InterfaceCostTimeInterceptor implements HandlerInterceptor{
         LOGGER.info("【{}】 start call api :{} ,Time：{}",ipAddress,url,date);
 
         return true;
-    }
-
-    @Override
-    public void postHandle(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse, Object o, ModelAndView modelAndView) throws Exception {
-
     }
 
     @Override

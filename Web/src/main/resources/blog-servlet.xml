@@ -25,12 +25,13 @@
         <property name="suffix" value=".jsp"/>
     </bean>
 
+    <!--拦截器调用顺序 和这里的先后顺序有关-->
     <mvc:interceptors>
-        <bean class="com.scj.interceptor.InterfaceCostTimeInterceptor"/>
         <mvc:interceptor>
             <mvc:mapping path="/barrage/**"/>
             <bean class="com.scj.interceptor.InterfaceFrequencyInterceptor"/>
         </mvc:interceptor>
+        <bean class="com.scj.interceptor.InterfaceCostTimeInterceptor"/>
     </mvc:interceptors>
 
     <mvc:resources mapping="/scripts/**" location="/scripts/"></mvc:resources>
