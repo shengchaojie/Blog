@@ -130,6 +130,47 @@
 
     </dependencies>
 
+    <profiles>
+        <profile>
+            <id>local</id>
+            <activation>
+                <activeByDefault>true</activeByDefault>
+            </activation>
+            <build>
+                <filters>
+                    <filter>build/config-local.properties</filter>
+                </filters>
+            </build>
+        </profile>
+
+        <profile>
+            <id>product</id>
+            <build>
+                <filters>
+                    <filter>build/config-product.properties</filter>
+                </filters>
+            </build>
+        </profile>
+    </profiles>
+
+    <build>
+        <resources>
+            <resource>
+                <directory>src/main/resources</directory>
+                <includes>
+                    <include>**/*</include>
+                </includes>
+            </resource>
+            <resource>
+                <directory>src/main/resources</directory>
+                <includes>
+                    <include>database.properties</include>
+                </includes>
+                <filtering>true</filtering>
+            </resource>
+        </resources>
+    </build>
+
     <!--<repositories>
         <repository>
             <id>jboss-cache</id>

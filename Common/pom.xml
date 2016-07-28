@@ -53,4 +53,54 @@
         </dependency>
     </dependencies>
 
+    <profiles>
+        <profile>
+            <id>local</id>
+            <build>
+                <filters>
+                    <filter>build/config-local.properties</filter>
+                </filters>
+            </build>
+        </profile>
+        <profile>
+            <id>ubutu</id>
+            <activation>
+                <activeByDefault>true</activeByDefault>
+                <os>
+                    <version>ubutu</version>
+                </os>
+            </activation>
+            <build>
+                <filters>
+                    <filter>build/config-local-linux.properties</filter>
+                </filters>
+            </build>
+        </profile>
+        <profile>
+            <id>local-product</id>
+            <build>
+                <filters>
+                    <filter>config-product.properties</filter>
+                </filters>
+            </build>
+        </profile>
+    </profiles>
+
+    <build>
+        <resources>
+            <resource>
+                <directory>src/main/resources</directory>
+                <includes>
+                    <include>**/*</include>
+                </includes>
+            </resource>
+            <resource>
+                <directory>src/main/resources</directory>
+                <includes>
+                    <include>**/*</include>
+                </includes>
+                <filtering>true</filtering>
+            </resource>
+        </resources>
+    </build>
 </project>
