@@ -11,22 +11,37 @@
     </appender>
 
     <appender name="FILE" class="ch.qos.logback.core.FileAppender">
-        <file>/home/shengchaojie/testFile.log</file>
+        <file>d:/logs/testFile.log</file>
         <append>true</append>
         <encoder>
             <pattern>%-4relative [%thread] %-5level %logger{35} - %msg%n</pattern>
         </encoder>
     </appender>
 
-    <logger name="org.springframework" level="error"/>
-    <logger name="org.hibernate" level="error"/>
+    <appender name="rolling" class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <!--<filter class="ch.qos.logback.classic.filter.LevelFilter">
+            <level>DEBUG</level>
+            <onMatch>ACCEPT</onMatch>
+            <onMismatch>DENY</onMismatch>
+        </filter>-->
+        <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+            <FileNamePattern>D:/logs/error.%d{yyyy-MM-dd}.log</FileNamePattern>
+            <MaxHistory>30</MaxHistory>
+        </rollingPolicy>
+        <encoder>
+            <pattern>%date [%thread] %-5level %logger{80} - %msg%n</pattern>
+        </encoder>
+    </appender>
+
+    <logger name="org.springframework" level="info"/>
+    <logger name="org.hibernate" level="info"/>
 
     <!-- 日志级别 -->
-    <root>
+    <root level="debug">
         <!-- 定义了ERROR和INFO级别的日志，分别在FILE文件和控制台输出 -->
-        <level value="info" />
-        <appender-ref ref="FILE" />
-        <appender-ref ref="console" />
+        <appender-ref ref="FILE"/>
+        <appender-ref ref="console"/>
+        <appender-ref ref="rolling"/>
     </root>
 
 </configuration>

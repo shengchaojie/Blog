@@ -26,6 +26,7 @@
     </bean>
 
     <mvc:interceptors>
+        <bean class="com.scj.interceptor.InterfaceCostTimeInterceptor"/>
         <mvc:interceptor>
             <mvc:mapping path="/barrage/**"/>
             <bean class="com.scj.interceptor.InterfaceFrequencyInterceptor"/>

@@ -23,11 +23,4 @@ public class TalkServiceTest extends TestBase{
         talkService.getTalks(9).stream().forEach(System.out::println);
     }
 
-    @Test
-    public void testLog()
-    {
-        LOGGER.info("123");
-        LOGGER.debug("debug 123");
-        LOGGER.error("error 123");
-    }
 }
