@@ -33,12 +33,14 @@
             <mvc:exclude-mapping path="/hello" />
             <mvc:exclude-mapping path="/scripts/**" />
             <mvc:exclude-mapping path="/bootstrap/**" />
+            <mvc:exclude-mapping path="/pic/**" />
             <bean class="com.scj.interceptor.LoginStatusInterceptor"/>
         </mvc:interceptor>
         <mvc:interceptor>
             <mvc:mapping path="/barrage/**"/>
             <mvc:exclude-mapping path="/scripts/**" />
             <mvc:exclude-mapping path="/bootstrap/**" />
+            <mvc:exclude-mapping path="/pic/**" />
             <bean class="com.scj.interceptor.InterfaceFrequencyInterceptor"/>
         </mvc:interceptor>
         <bean class="com.scj.interceptor.InterfaceCostTimeInterceptor"/>
@@ -46,7 +48,9 @@
 
     <mvc:resources mapping="/scripts/**" location="/scripts/"></mvc:resources>
     <mvc:resources mapping="/bootstrap/**" location="/bootstrap/"></mvc:resources>
-<!--
+    <mvc:resources mapping="/pic/**" location="/bootstrap/"></mvc:resources>
+
+    <!--
     <entity id="exceptionHandler" class="com.scj.common.exception.MyExceptionHandler"/>
 -->
 </beans>

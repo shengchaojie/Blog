@@ -12,46 +12,71 @@
 </head>
 <body>
 <jsp:include page="header.jsp"/>
-<div class="container">
+<script>
+    var count =0;
+    reset();
+    $(function(){
+        $("img").click(function(){
+            if(count <1)
+            {
+                $(this).fadeToggle("slow",function(){
+                    $(this).attr("src","pics/qq.jpg");
+                    $(this).fadeIn("normal");
+                });
+
+                count ++;
+            }else
+            {
+                alert('no');
+            }
+
+        });
+    });
+
+    function reset()
+    {
+        count =0;
+        $("img").attr("src","pics/1.jpg");
+        $("img").attr("display","block");
+    }
+</script>
+<div class="container-fluid" style="width:600px;height:600px">
     <div class="row">
-        <div class="col-md-8 col-md-offset-2">
-            <div id="myCarousel" class="carousel slide">
-                <!-- 轮播（Carousel）指标 -->
-                <ol class="carousel-indicators">
-                    <li data-target="#myCarousel" data-slide-to="0" class="active"></li>
-                    <li data-target="#myCarousel" data-slide-to="1"></li>
-                    <li data-target="#myCarousel" data-slide-to="2"></li>
-                </ol>
-                <!-- 轮播（Carousel）项目 -->
-                <div class="carousel-inner">
-                    <div class="item active">
-                        <div class="jumbotron">
-                            <h1>Hello, world!</h1>
-                            <p>...</p>
-                            <p><a class="btn btn-primary btn-lg" href="#" role="button">Learn more</a></p>
-                        </div>
-                    </div>
-                    <div class="item">
-                        <div class="jumbotron">
-                            <h1>Hello, world!</h1>
-                            <p>...</p>
-                            <p><a class="btn btn-primary btn-lg" href="#" role="button">Learn more</a></p>
-                        </div>
-                    </div>
-                    <div class="item">
-                        <div class="jumbotron">
-                            <h1>Hello, world!</h1>
-                            <p>...</p>
-                            <p><a class="btn btn-primary btn-lg" href="#" role="button">Learn more</a></p>
-                        </div>
-                    </div>
-                </div>
-                <!-- 轮播（Carousel）导航 -->
-                <a class="carousel-control left" href="#myCarousel"
-                   data-slide="prev">&lsaquo;</a>
-                <a class="carousel-control right" href="#myCarousel"
-                   data-slide="next">&rsaquo;</a>
-            </div>
+        <div class="col-md-4">
+            <img src="pics/1.jpg" alt="..." class="img-rounded pocker">
+        </div>
+        <div class="col-md-4">
+            <img src="pics/1.jpg" alt="..." class="img-rounded pocker">
+        </div>
+        <div class="col-md-4">
+            <img src="pics/1.jpg" alt="..." class="img-rounded pocker">
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-4">
+            <img src="pics/1.jpg" alt="..." class="img-rounded pocker">
+        </div>
+        <div class="col-md-4">
+            <img src="pics/1.jpg" alt="..." class="img-rounded pocker">
+        </div>
+        <div class="col-md-4">
+            <img src="pics/1.jpg" alt="..." class="img-rounded pocker">
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-4">
+            <img src="pics/1.jpg" alt="..." class="img-rounded pocker">
+        </div>
+        <div class="col-md-4">
+            <img src="pics/1.jpg" alt="..." class="img-rounded pocker">
+        </div>
+        <div class="col-md-4">
+            <img src="pics/1.jpg" alt="..." class="img-rounded pocker">
+        </div>
+    </div>
+    <div class="row" style="padding:10px">
+        <div class="col-md-4 col-md-offset-3">
+            <button class="btn btn-default" type="button" onclick="reset();">reset</button>
         </div>
     </div>
 </div>
