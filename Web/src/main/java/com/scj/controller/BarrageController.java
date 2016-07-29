@@ -1,10 +1,9 @@
 package com.scj.controller;
 
-import com.bean.BarrageVO;
+import com.scj.bean.BarrageVO;
 import com.scj.common.util.ObjectUtil;
 import com.scj.user.entity.Barrage;
 import com.scj.user.service.BarrageService;
-import com.scj.user.service.UserService;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;

@@ -1,6 +1,4 @@
-package com.bean;
-
-import javax.persistence.Id;
+package com.scj.bean;
 
 /**
  * Created by shengcj on 2016/7/19.

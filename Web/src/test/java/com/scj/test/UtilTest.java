@@ -1,6 +1,6 @@
 package com.scj.test;
 
-import com.bean.BarrageVO;
+import com.scj.bean.BarrageVO;
 import com.scj.common.util.CollectionUtils;
 import com.scj.common.util.ObjectUtil;
 import com.scj.user.entity.Barrage;

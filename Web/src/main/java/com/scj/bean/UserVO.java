@@ -1,4 +1,4 @@
-package com.bean;
+package com.scj.bean;
 
 /**
  * Created by shengchaojie on 2016/7/18.

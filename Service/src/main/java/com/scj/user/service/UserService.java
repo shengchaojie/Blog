@@ -9,7 +9,9 @@ public interface UserService {
 
     boolean register(User user);
 
-    boolean login(String username,String password);
+    User login(String username, String password);
 
     boolean isUserExisted(String username);
+
+    User getUserByUsername(String username);
 }

@@ -38,7 +38,7 @@ public class UserServiceImpl implements UserService{
     }
 
     @Override
-    public boolean login(String username, String password) {
+    public User login(String username, String password) {
         AssertUtils.isStringEmpty(username);
         AssertUtils.isStringEmpty(password);
 
@@ -48,10 +48,11 @@ public class UserServiceImpl implements UserService{
             throw new BusinessException(StatusCode.USER_NOT_EXISTED);
         }
 
+        User user =null;
         //登陆校验
-        if(userRepository.findByUsernameAndPassword(username,EncodeDecodeUtil.EncodePassword(password))!=null)
+        if((user=userRepository.findByUsernameAndPassword(username,EncodeDecodeUtil.EncodePassword(password)))!=null)
         {
-            return true;
+            return user;
         }else
         {
             throw new BusinessException(StatusCode.USERNAME_PASSWORD_WRONG);
@@ -62,5 +63,10 @@ public class UserServiceImpl implements UserService{
     @Override
     public boolean isUserExisted(String username) {
         return userRepository.findByUsername(username).size()>0;
+    }
+
+    @Override
+    public User getUserByUsername(String username) {
+        return userRepository.findByUsername(username).get(0);
     }
 }
