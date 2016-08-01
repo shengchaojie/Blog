@@ -5,16 +5,33 @@
 --%>
 <%@ page contentType="text/html;charset=UTF-8" language="java" isELIgnored="false" %>
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
+
 <html>
 <head>
     <title>Login</title>
-    <form:form action="${pageContext.request.contextPath}/user/login" method="post">
-        username:<input type="text" name="username"/><br/>
-        password:<input type="text" name="password"/><br/>
-        <input type="submit" value="login"/>
-    </form:form>
+    <style>
+        .form-singin{
+            max-width: 330px;
+            margin: 10% auto;
+        }
+
+        .login-container{
+            height: 100%;
+        }
+    </style>
 </head>
 <body>
+    <jsp:include page="../header.jsp"/>
+    <div class="container login-container">
+        <form:form cssClass="form-singin" action="${pageContext.request.contextPath}/user/login" method="post">
+            <h2><strong>请登录</strong></h2>
+            <input type="text" name="username" placeholder="用户名" class="form-control"/><br/>
+            <input type="password" name="password" placeholder="密码" class="form-control"/><br/>
+            <button class="btn btn-lg btn-primary btn-block" type="submit">登陆</button>
+            <a class="btn btn-lg btn-block btn-success" href="${pageContext.request.contextPath}/user/view/register" role="button">注册</a>
+        </form:form>
+    </div>
+
 
 </body>
 </html>
