@@ -3,12 +3,14 @@ package com.scj.controller;
 import com.scj.bean.UserVO;
 import com.scj.common.util.AssertUtils;
 import com.scj.context.BlogContext;
+import com.scj.context.ResponseResult;
 import com.scj.user.entity.User;
 import com.scj.user.entity.UserInfo;
 import com.scj.user.service.UserService;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.annotation.Resource;
 import javax.servlet.http.Cookie;
@@ -44,7 +46,6 @@ public class UserController {
 
     @RequestMapping(path = "/login",method = RequestMethod.POST)
     public String login(String username, String password, HttpSession session,HttpServletResponse response)
-
     {
         AssertUtils.isStringEmpty(username);
         AssertUtils.isStringEmpty(password);
@@ -118,5 +119,18 @@ public class UserController {
         response.addCookie(cookie);
 
         return "/index";
+    }
+
+    @RequestMapping(path = "isUserNameExisted",method = RequestMethod.GET)
+    @ResponseBody
+    public String isUserNameExisted(String username)
+    {
+        if(userService.isUserExisted(username))
+        {
+            return "false";
+        }else
+        {
+            return "true";
+        }
     }
 }

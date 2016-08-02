@@ -52,7 +52,5 @@
     <mvc:resources mapping="/bootstrap/**" location="/bootstrap/"></mvc:resources>
     <mvc:resources mapping="/pics/**" location="/pics/"></mvc:resources>
 
-    <!--
-    <entity id="exceptionHandler" class="com.scj.common.exception.MyExceptionHandler"/>
--->
+    <bean id="exceptionHandler" class="com.scj.exception.DefaultExceptionHandler"/>
 </beans>

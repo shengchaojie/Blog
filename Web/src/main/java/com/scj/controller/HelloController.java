@@ -1,9 +1,12 @@
 package com.scj.controller;
 
 
+import com.scj.common.exception.BusinessException;
+import com.scj.common.exception.StatusCode;
 import com.scj.hello.service.HelloService;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
+import sun.misc.BASE64Decoder;
 
 import javax.annotation.Resource;
 
@@ -21,6 +24,11 @@ public class HelloController {
     public String hello()
     {
         //helloService.hello("scj");
+        /*if(1==1)
+        {
+            //throw new RuntimeException("123");
+            throw new BusinessException(StatusCode.USER_NOT_EXISTED);
+        }*/
 
         return "index";
     }
