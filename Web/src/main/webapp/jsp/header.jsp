@@ -14,6 +14,9 @@
     <script src="${pageContext.request.contextPath}/scripts/jquery.js"></script>
     <script src="${pageContext.request.contextPath}/bootstrap/js/bootstrap.js"></script>
     <script src="${pageContext.request.contextPath}/scripts/jquery.danmu.js"></script>
+    <script src="${pageContext.request.contextPath}/bootstrap/js/bootstrap-datetimepicker.min.js"></script>
+    <script src="${pageContext.request.contextPath}/bootstrap/locale/bootstrap-datetimepicker.zh-CN.js" charset="utf-8"></script>
+    <link href="${pageContext.request.contextPath}/bootstrap/css/bootstrap-datetimepicker.min.css" rel="stylesheet">
     <script>
         //公共定义上下文
         var context ="${pageContext.request.contextPath}";

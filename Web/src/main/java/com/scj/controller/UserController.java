@@ -4,6 +4,7 @@ import com.scj.bean.UserVO;
 import com.scj.common.util.AssertUtils;
 import com.scj.context.BlogContext;
 import com.scj.user.entity.User;
+import com.scj.user.entity.UserInfo;
 import com.scj.user.service.UserService;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -81,6 +82,18 @@ public class UserController {
         user.setUsername(userVO.getUsername());
         user.setPassword(userVO.getPassword());
         user.setNickname(userVO.getNickname());
+
+        UserInfo userInfo =new UserInfo();
+        userInfo.setUser(user);
+        userInfo.setAge(userVO.getAge());
+        SimpleDateFormat sdf =new SimpleDateFormat("yyyy-MM-dd");
+        try {
+            userInfo.setBirth(sdf.parse(userVO.getBirth()));
+        }catch (Exception e)
+        {}
+        userInfo.setGender(userVO.getGender());
+
+        user.setUserInfo(userInfo);
 
         if(userService.register(user))
         {
