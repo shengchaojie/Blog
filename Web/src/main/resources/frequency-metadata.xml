@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<config xmlns="http://www.w3school.com.cn"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://www.w3school.com.cn frequency.xsd">
+    <interface url="/hello" unitTime="6000" unitCount ="5" level="ip" interval="6000"/>
+    <interface url="/barrage/test" unitTime="6000" unitCount="5" level="ip" interval="6000"/>
+
+</config>

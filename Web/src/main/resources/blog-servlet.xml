@@ -43,7 +43,7 @@
             <mvc:exclude-mapping path="/bootstrap/**" />
             <mvc:exclude-mapping path="/pics/**" />
             <mvc:exclude-mapping path="/" />
-            <bean class="com.scj.interceptor.InterfaceFrequencyInterceptor"/>
+            <bean class="com.scj.interceptor.TestFrequencyInterceptor"/>
         </mvc:interceptor>
         <bean class="com.scj.interceptor.InterfaceCostTimeInterceptor"/>
     </mvc:interceptors>
