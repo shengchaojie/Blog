@@ -19,11 +19,18 @@
       <param-value>utf-8</param-value>
     </init-param>
   </filter>
+  <filter>
+    <filter-name>frequencyFilter</filter-name>
+    <filter-class>com.scj.filter.TestFrequencyFilter</filter-class>
+  </filter>
   <filter-mapping>
     <filter-name>encodingFilter</filter-name>
     <url-pattern>/*</url-pattern>
   </filter-mapping>
-
+  <filter-mapping>
+    <filter-name>frequencyFilter</filter-name>
+    <url-pattern>/*</url-pattern>
+  </filter-mapping>
   <!-- spring -->
   <listener>
     <listener-class>org.springframework.web.context.ContextLoaderListener</listener-class>

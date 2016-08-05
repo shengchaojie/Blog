@@ -38,14 +38,14 @@
             <mvc:exclude-mapping path="/" />
             <bean class="com.scj.interceptor.LoginStatusInterceptor"/>
         </mvc:interceptor>
-        <mvc:interceptor>
+        <!--<mvc:interceptor>
             <mvc:mapping path="/barrage/**"/>
             <mvc:exclude-mapping path="/scripts/**" />
             <mvc:exclude-mapping path="/bootstrap/**" />
             <mvc:exclude-mapping path="/pics/**" />
             <mvc:exclude-mapping path="/" />
-            <bean class="com.scj.interceptor.TestFrequencyInterceptor"/>
-        </mvc:interceptor>
+            <bean class="com.scj.interceptor.frequency.TestFrequencyInterceptor"/>
+        </mvc:interceptor>-->
         <bean class="com.scj.interceptor.InterfaceCostTimeInterceptor"/>
     </mvc:interceptors>
 

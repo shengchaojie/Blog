@@ -1,4 +1,6 @@
-package com.scj.interceptor;
+package com.scj.interceptor.frequency;
+
+import com.scj.interceptor.frequency.FrequencyInterceptor;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -8,7 +10,7 @@ import java.io.OutputStream;
 /**
  * Created by shengchaojie on 2016/8/3.
  */
-public class TestFrequencyInterceptor extends FrequencyInterceptor{
+public class TestFrequencyInterceptor extends FrequencyInterceptor {
 
     @Override
     public String getUserName(HttpServletRequest httpServletRequest) {

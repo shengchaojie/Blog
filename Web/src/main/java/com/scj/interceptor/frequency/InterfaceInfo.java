@@ -1,4 +1,4 @@
-package com.scj.interceptor;
+package com.scj.interceptor.frequency;
 
 import java.util.Date;
 

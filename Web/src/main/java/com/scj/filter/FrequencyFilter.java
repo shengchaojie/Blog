@@ -1,46 +1,52 @@
-package com.scj.interceptor;
+package com.scj.filter;
 
-import ch.qos.logback.classic.util.LoggerNameUtil;
-import javafx.collections.transformation.SortedList;
+import com.scj.interceptor.frequency.FrequencyControlLevel;
+import com.scj.interceptor.frequency.FrequencyMetaData;
+import com.scj.interceptor.frequency.InterfaceInfo;
 import org.dom4j.Document;
 import org.dom4j.DocumentException;
 import org.dom4j.Element;
 import org.dom4j.io.SAXReader;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.web.bind.annotation.ExceptionHandler;
-import org.springframework.web.servlet.HandlerInterceptor;
-import org.springframework.web.servlet.ModelAndView;
 
+import javax.servlet.*;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import java.io.IOException;
 import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
 
-import static com.scj.interceptor.FrequencyControlLevel.*;
+import static com.scj.interceptor.frequency.FrequencyControlLevel.all;
+import static com.scj.interceptor.frequency.FrequencyControlLevel.ip;
+import static com.scj.interceptor.frequency.FrequencyControlLevel.username;
 
 /**
- * Created by shengchaojie on 2016/8/3.
+ * Created by shengcj on 2016/8/5.
  */
-public abstract class FrequencyInterceptor implements HandlerInterceptor{
-
-    private static final Logger LOGGER = LoggerFactory.getLogger(FrequencyInterceptor.class);
+public abstract class FrequencyFilter implements Filter{
+    private static final Logger LOGGER = LoggerFactory.getLogger(FrequencyFilter.class);
 
     //url 和接口信息的映射
-    private static final Map<String,List<InterfaceInfo>> interfaceInvokeMap =new ConcurrentHashMap<>();
+    private  Map<String,List<InterfaceInfo>> interfaceInvokeMap =new ConcurrentHashMap<>();
 
     //保存元数据 初始化时加载应该不存在线程安全问题
-    private static final Map<String,FrequencyMetaData> metaDataMap =new HashMap<>();
+    private  Map<String,FrequencyMetaData> metaDataMap =new HashMap<>();
 
-    //加载元数据
-    static
-    {
-        LOGGER.info("加载FrequencyInterceptor配置信息");
-        readXmlConfig();
+    @Override
+    public void init(FilterConfig filterConfig) throws ServletException {
+        String configPath =filterConfig.getInitParameter("configPath");
+        if(configPath==null||configPath.length()==0)
+        {
+            configPath="frequency-metadata.xml";
+        }
+        readXmlConfig(configPath);
     }
 
     @Override
-    public boolean preHandle(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse, Object o) throws Exception {
+    public void doFilter(ServletRequest servletRequest, ServletResponse servletResponse, FilterChain filterChain) throws IOException, ServletException {
+        HttpServletRequest httpServletRequest =(HttpServletRequest)servletRequest;
+        HttpServletResponse httpServletResponse =(HttpServletResponse)servletResponse;
 
         String url =httpServletRequest.getRequestURI();
         String context =httpServletRequest.getContextPath();//没有上下文根的时候 为空
@@ -55,7 +61,7 @@ public abstract class FrequencyInterceptor implements HandlerInterceptor{
         if(metaData==null)
         {
             LOGGER.debug("{} 不存在配置的元数据",url);
-            return true;
+            filterChain.doFilter(servletRequest,servletResponse);
         }
 
         //拿到历史调用信息，如何做缓存？
@@ -68,7 +74,7 @@ public abstract class FrequencyInterceptor implements HandlerInterceptor{
                         metaData.getLevel().equals(ip)?
                                 ipAddress
                                 :null
-                );
+        );
         InterfaceInfo interfaceInfo =new InterfaceInfo(url,new Date(),ipAddress);
 
         try {
@@ -80,10 +86,10 @@ public abstract class FrequencyInterceptor implements HandlerInterceptor{
                 long interval = interfaceInfo.getInvokeTime().getTime() - lastUnitCountInvoke.getInvokeTime().getTime();
                 if (interval < metaData.getUnitTime()) {
                     handleUnitTimeNotPass(httpServletResponse);
-                    return false;
+                    return ;
                 }
             } else if(historyInvoke.size()==0){
-                return true;
+                filterChain.doFilter(servletRequest,servletResponse);
             }
 
             //调用间隔判断
@@ -92,10 +98,10 @@ public abstract class FrequencyInterceptor implements HandlerInterceptor{
             LOGGER.debug("调用间隔判断 interval={}",interval);
             if (interval < metaData.getInterval()) {
                 handleIntervalNotPass(httpServletResponse);
-                return false;
+                return ;
             }
 
-            return true;
+            filterChain.doFilter(servletRequest,servletResponse);
         }finally {
             //不管调用是否成功 都需要记录
             List<InterfaceInfo> temp =interfaceInvokeMap.get(url);
@@ -104,21 +110,9 @@ public abstract class FrequencyInterceptor implements HandlerInterceptor{
     }
 
     @Override
-    public void postHandle(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse, Object o, ModelAndView modelAndView) throws Exception {
+    public void destroy() {
 
     }
-
-    @Override
-    public void afterCompletion(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse, Object o, Exception e) throws Exception {
-
-    }
-
-    //预留方法 设置 用户名使用
-    public abstract String getUserName(HttpServletRequest httpServletRequest);
-
-    public abstract void handleUnitTimeNotPass(HttpServletResponse httpServletResponse);
-
-    public abstract void handleIntervalNotPass(HttpServletResponse httpServletResponse);
 
     private List<InterfaceInfo> getInterfaceInfos(String url,FrequencyControlLevel level,String value)
     {
@@ -162,7 +156,7 @@ public abstract class FrequencyInterceptor implements HandlerInterceptor{
         return result;
     }
 
-    private static void readXmlConfig()
+    private void readXmlConfig(String configPath)
     {
         Document document =null;
         SAXReader saxReader =new SAXReader();
@@ -201,4 +195,12 @@ public abstract class FrequencyInterceptor implements HandlerInterceptor{
             LOGGER.error("读取配置文件出错");
         }
     }
+
+    //预留方法 设置 用户名使用
+    public abstract String getUserName(HttpServletRequest httpServletRequest);
+
+    public abstract void handleUnitTimeNotPass(HttpServletResponse httpServletResponse);
+
+    public abstract void handleIntervalNotPass(HttpServletResponse httpServletResponse);
+
 }
