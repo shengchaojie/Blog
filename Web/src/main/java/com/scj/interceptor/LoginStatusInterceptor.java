@@ -2,6 +2,8 @@ package com.scj.interceptor;
 
 import com.scj.context.BlogContext;
 import com.scj.user.service.UserService;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.web.servlet.handler.HandlerInterceptorAdapter;
 
 import javax.annotation.Resource;
@@ -16,6 +18,8 @@ import java.util.Date;
  * Created by shengcj on 2016/7/29.
  */
 public class LoginStatusInterceptor extends HandlerInterceptorAdapter {
+    private static final Logger LOGGER = LoggerFactory.getLogger(LoginStatusInterceptor.class);
+
     @Resource
     private UserService userService;
 
@@ -37,7 +41,8 @@ public class LoginStatusInterceptor extends HandlerInterceptorAdapter {
             }
         }
         if (userCookie == null) {
-            // TODO: 2016/7/29 可以把这些路径放到一个公共类中 
+            // TODO: 2016/7/29 可以把这些路径放到一个公共类中
+            LOGGER.info("访问{}需要登录态",request.getRequestURI());
             response.sendRedirect(request.getContextPath() + "/user/view/login");
         } else {
             uid = userCookie.getValue();

@@ -5,8 +5,8 @@
     <title>Title</title>
     <h1>${hello}</h1>
     <h1>${ex}</h1>
-    <p>${ex.code} </p>
-    <p>${ex.message} </p>
+    <%--<p>${ex.code} </p>
+    <p>${ex.message} </p>--%>
 </head>
 <body>
 

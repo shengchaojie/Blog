@@ -34,6 +34,7 @@
             <mvc:exclude-mapping path="/scripts/**" />
             <mvc:exclude-mapping path="/bootstrap/**" />
             <mvc:exclude-mapping path="/pics/**" />
+            <mvc:exclude-mapping path="/barrage/test" />
             <mvc:exclude-mapping path="/" />
             <bean class="com.scj.interceptor.LoginStatusInterceptor"/>
         </mvc:interceptor>
