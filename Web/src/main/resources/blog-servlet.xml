@@ -26,7 +26,7 @@
     </bean>
 
     <!--拦截器调用顺序 和这里的先后顺序有关-->
-    <mvc:interceptors>
+    <!--<mvc:interceptors>
         <mvc:interceptor>
             <mvc:mapping path="/**"/>
             <mvc:exclude-mapping path="/user/**" />
@@ -39,16 +39,16 @@
             <mvc:exclude-mapping path="/" />
             <bean class="com.scj.interceptor.LoginStatusInterceptor"/>
         </mvc:interceptor>
-        <!--<mvc:interceptor>
+        &lt;!&ndash;<mvc:interceptor>
             <mvc:mapping path="/barrage/**"/>
             <mvc:exclude-mapping path="/scripts/**" />
             <mvc:exclude-mapping path="/bootstrap/**" />
             <mvc:exclude-mapping path="/pics/**" />
             <mvc:exclude-mapping path="/" />
             <bean class="com.scj.interceptor.frequency.TestFrequencyInterceptor"/>
-        </mvc:interceptor>-->
+        </mvc:interceptor>&ndash;&gt;
         <bean class="com.scj.interceptor.InterfaceCostTimeInterceptor"/>
-    </mvc:interceptors>
+    </mvc:interceptors>-->
 
     <mvc:resources mapping="/scripts/**" location="/scripts/"></mvc:resources>
     <mvc:resources mapping="/bootstrap/**" location="/bootstrap/"></mvc:resources>

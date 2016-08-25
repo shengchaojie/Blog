@@ -60,8 +60,9 @@ public abstract class FrequencyFilter implements Filter{
         //如果元数据不存在，补监控
         if(metaData==null)
         {
-            LOGGER.debug("{} 不存在配置的元数据",url);
+            LOGGER.debug("{} 不存在配置的元数据，不进行过滤",url);
             filterChain.doFilter(servletRequest,servletResponse);
+            return;
         }
 
         //拿到历史调用信息，如何做缓存？
@@ -90,6 +91,7 @@ public abstract class FrequencyFilter implements Filter{
                 }
             } else if(historyInvoke.size()==0){
                 filterChain.doFilter(servletRequest,servletResponse);
+                return;
             }
 
             //调用间隔判断

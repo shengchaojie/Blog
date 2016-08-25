@@ -14,6 +14,7 @@ import java.util.List;
 
 /**
  * Created by shengcj on 2016/7/19.
+ * 调用失败成功也可以记录
  */
 @Controller
 @RequestMapping("/barrage")

@@ -1,5 +1,9 @@
 package com.scj.filter;
 
+import com.sun.xml.internal.xsom.impl.Ref;
+import org.apache.commons.lang3.CharEncoding;
+import org.apache.commons.lang3.CharSet;
+
 import javax.servlet.FilterChain;
 import javax.servlet.ServletException;
 import javax.servlet.ServletRequest;
@@ -21,6 +25,8 @@ public class TestFrequencyFilter extends FrequencyFilter{
 
     @Override
     public void handleUnitTimeNotPass(HttpServletResponse httpServletResponse) {
+        httpServletResponse.setContentType("application/json");
+        httpServletResponse.setCharacterEncoding(CharEncoding.UTF_8);
         try {
             OutputStream outputStream =httpServletResponse.getOutputStream();
             try {
@@ -36,6 +42,8 @@ public class TestFrequencyFilter extends FrequencyFilter{
 
     @Override
     public void handleIntervalNotPass(HttpServletResponse httpServletResponse) {
+        httpServletResponse.setContentType("application/json");
+        httpServletResponse.setCharacterEncoding(CharEncoding.UTF_8);
         try {
             OutputStream outputStream =httpServletResponse.getOutputStream();
             try {

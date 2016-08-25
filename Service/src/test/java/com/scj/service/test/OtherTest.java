@@ -5,6 +5,10 @@ import org.junit.Test;
 import javax.print.DocFlavor;
 import java.lang.reflect.Field;
 import java.math.BigDecimal;
+import java.util.Date;
+import java.util.Enumeration;
+import java.util.Properties;
+import java.util.TimeZone;
 
 /**
  * Created by shengcj on 2016/8/8.
@@ -81,4 +85,24 @@ public class OtherTest {
         System.out.println(str);
     }
 
+    @Test
+    public  void testCst()
+    {
+        System.out.println(TimeZone.getDefault()); //输出当前默认时区
+        final TimeZone zone = TimeZone.getTimeZone("GMT+8"); //获取中国时区
+        TimeZone.setDefault(zone); //设置时区
+        System.out.println(TimeZone.getDefault()); //输出验证
+    }
+
+    @Test
+    public  void systemProperties() {
+        Properties properties = System.getProperties();
+        Enumeration e = properties.keys();
+        while (e.hasMoreElements())
+        {
+            String s = (String) e.nextElement();
+            String value =System.getProperty(s);
+            System.out.println(s+":"+value);
+        }
+    }
 }
