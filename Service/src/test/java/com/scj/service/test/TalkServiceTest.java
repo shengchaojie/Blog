@@ -1,5 +1,7 @@
 package com.scj.service.test;
 
+import com.scj.hello.aspect.ByeService;
+import com.scj.hello.service.HelloService;
 import com.scj.user.service.TalkService;
 import org.junit.Test;
 import org.slf4j.Logger;
@@ -17,10 +19,28 @@ public class TalkServiceTest extends TestBase{
     @Resource
     private TalkService talkService;
 
+    @Resource
+    private HelloService helloService;
+
+    @Resource
+    private ByeService byeService;
+
     @Test
     public void getTalks()
     {
         talkService.getTalks(9).stream().forEach(System.out::println);
     }
 
+    @Test
+    public void testAop()
+    {
+        helloService.hello("123");
+    }
+
+    @Test
+    public void testAopInject()
+    {
+        System.out.println(byeService.getClass());
+        byeService.sayBye();
+    }
 }

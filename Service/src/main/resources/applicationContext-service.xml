@@ -2,7 +2,8 @@
 <beans xmlns="http://www.springframework.org/schema/beans"
        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
        xmlns:context="http://www.springframework.org/schema/context"
-       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd">
+       xmlns:aop="http://www.springframework.org/schema/aop"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop.xsd">
 
 <!--
     <import resource="classpath:applicationContext-jpa.xml"/>
@@ -11,4 +12,15 @@
 
     <context:component-scan base-package="com.scj.*.service"/>
 
+    <bean id="adviceBean" class="com.scj.hello.aspect.HelloWorldAspect"/>
+    <aop:aspectj-autoproxy/>
+    <!--<aop:config>
+        <aop:pointcut id="pointcut" expression="execution(* com.scj.hello..*.*(..))"/>
+        <aop:pointcut id="pointcut2" expression="execution(* com.scj.hello..*.*(..)) and args(param)"/>
+       <aop:aspect ref="adviceBean">
+           <aop:before method="beforeAdvice(java.lang.String)" pointcut="execution(* com.scj.hello..*.*(..)) and args(param)" arg-names="param"/>
+           <aop:after-returning method="afterAdvice" pointcut-ref="pointcut" arg-names="retVal" returning="retVal"/>
+           <aop:around method="aroundAdvice" pointcut="execution(* com.scj.hello..*.*(..))"/>
+       </aop:aspect>
+    </aop:config>-->
 </beans>
