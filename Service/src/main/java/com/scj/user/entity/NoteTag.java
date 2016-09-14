@@ -2,6 +2,8 @@ package com.scj.user.entity;
 
 import javax.persistence.*;
 import java.util.Date;
+import java.util.HashSet;
+import java.util.Set;
 
 /**
  * Created by shengcj on 2016/9/1.
@@ -18,10 +20,16 @@ public class NoteTag {
 
     @ManyToOne(fetch =FetchType.EAGER)
     @JoinColumn(name="user_id",nullable = false)
-    private User user =new User();
+    private User user ;
 
     @Column(name = "create_time")
     private Date createTime;
+
+    @Column(name="update_time",columnDefinition = "timestamp DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP")
+    private Date updateTime;
+
+    @ManyToMany(mappedBy = "noteTags")
+    private Set<Note> notes =new HashSet<>();
 
     public Integer getId() {
         return id;
@@ -53,5 +61,21 @@ public class NoteTag {
 
     public void setCreateTime(Date createTime) {
         this.createTime = createTime;
+    }
+
+    public Set<Note> getNotes() {
+        return notes;
+    }
+
+    public void setNotes(Set<Note> notes) {
+        this.notes = notes;
+    }
+
+    public Date getUpdateTime() {
+        return updateTime;
+    }
+
+    public void setUpdateTime(Date updateTime) {
+        this.updateTime = updateTime;
     }
 }

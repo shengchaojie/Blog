@@ -105,4 +105,10 @@ public class OtherTest {
             System.out.println(s+":"+value);
         }
     }
+
+    @Test
+    public void testGenerateDDL()
+    {
+
+    }
 }

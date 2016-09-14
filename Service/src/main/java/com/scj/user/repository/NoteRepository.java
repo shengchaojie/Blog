@@ -10,5 +10,7 @@ import java.util.List;
  * Created by shengcj on 2016/9/1.
  */
 public interface NoteRepository extends JpaRepository<Note,Integer>{
-    List<NoteTag> findByUserIdAndTagId(int userId,int tagId);
+    //List<Note> findByUserIdAndTagId(int userId,int tagId);
+
+    List<Note> findByUserId(int userId);
 }

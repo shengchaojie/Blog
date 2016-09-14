@@ -2,6 +2,8 @@ package com.scj.user.entity;
 
 import javax.persistence.*;
 import java.util.Date;
+import java.util.HashSet;
+import java.util.Set;
 
 /**
  * Created by shengcj on 2016/9/1.
@@ -17,19 +19,23 @@ public class Note {
 
     private String content;
 
-    @Column(name="create_time")
+    @Column(name = "create_time")
     private Date createTime;
 
-    @Column(name="update_time")
+    //新版本的mysql 只能有一个列 采用这个属性
+    @Column(name="update_time",columnDefinition = "timestamp DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP")
     private Date updateTime;
 
     @ManyToOne()
     @JoinColumn(name="user_id")
-    private User user =new User();
+    private User user;
 
-    @ManyToOne
-    @JoinColumn(name="note_tag_id")
-    private NoteTag noteTag =new NoteTag();
+    @ManyToMany
+    @JoinTable(name = "note_tag_map",
+            joinColumns = {@JoinColumn(name = "note_id")},
+            inverseJoinColumns = {@JoinColumn(name ="note_tag_id")}
+    )
+    private Set<NoteTag> noteTags =new HashSet<>();
 
     public Integer getId() {
         return id;
@@ -79,11 +85,11 @@ public class Note {
         this.user = user;
     }
 
-    public NoteTag getNoteTag() {
-        return noteTag;
+    public Set<NoteTag> getNoteTags() {
+        return noteTags;
     }
 
-    public void setNoteTag(NoteTag noteTag) {
-        this.noteTag = noteTag;
+    public void setNoteTags(Set<NoteTag> noteTags) {
+        this.noteTags = noteTags;
     }
 }
