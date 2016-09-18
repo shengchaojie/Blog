@@ -9,12 +9,14 @@ import com.scj.user.repository.NoteRepository;
 import com.scj.user.repository.NoteTagRepository;
 import com.scj.user.repository.UserRepository;
 import com.scj.user.service.NoteService;
+import org.hibernate.Hibernate;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
+import java.util.Date;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -47,6 +49,7 @@ public class NoteServiceImpl implements NoteService{
         NoteTag noteTag =new NoteTag();
         noteTag.setTagName(tagName);
         noteTag.setUser(user);
+        noteTag.setCreateTime(new Date());
         noteTagRepository.save(noteTag);
 
     }
@@ -64,6 +67,9 @@ public class NoteServiceImpl implements NoteService{
             LOGGER.info("该标签不存在 tagId={}",tagId);
             throw new BusinessException(StatusCode.NOTE_TAG_NOT_EXISTED);
         }
+        //Hibernate.initialize(noteTag);
+        //System.out.println(noteTag.getTagName());
+
         noteTag.setTagName(newTagName);
         noteTagRepository.save(noteTag);
 
@@ -76,7 +82,7 @@ public class NoteServiceImpl implements NoteService{
 
     @Override
     public void addNote(String title, String content, Integer userId, Integer tagId) {
-        User user =userRepository.getOne(userId);
+        User user =userRepository.findOne(userId);
         if(user==null)
         {
             LOGGER.info("该用户不存在 userId={}",userId);

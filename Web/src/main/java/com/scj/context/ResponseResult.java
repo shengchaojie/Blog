@@ -35,6 +35,11 @@ public class ResponseResult<T> {
         this(statusCode.getCode(),statusCode.getMessage());
     }
 
+    public ResponseResult(StatusCode statusCode,T data)
+    {
+        this(statusCode.getCode(),statusCode.getMessage(),data);
+    }
+
     public int getCode() {
         return code;
     }

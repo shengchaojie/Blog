@@ -17,6 +17,9 @@
     <script src="${pageContext.request.contextPath}/bootstrap/js/bootstrap-datetimepicker.min.js"></script>
     <script src="${pageContext.request.contextPath}/bootstrap/locale/bootstrap-datetimepicker.zh-CN.js" charset="utf-8"></script>
     <script src="${pageContext.request.contextPath}/scripts/jquery.validate.min.js"></script>
+    <script src="http://static.runoob.com/assets/react/react-0.14.7/build/react.min.js"></script>
+    <script src="http://static.runoob.com/assets/react/react-0.14.7/build/react-dom.min.js"></script>
+    <script src="http://static.runoob.com/assets/react/browser.min.js"></script>
     <link href="${pageContext.request.contextPath}/bootstrap/css/bootstrap-datetimepicker.min.css" rel="stylesheet">
     <script>
         //公共定义上下文
@@ -35,6 +38,7 @@
                 <li><a href="${pageContext.request.contextPath}/hello">首页</a></li>
                 <li><a href="${pageContext.request.contextPath}/user/view/login">登陆</a></li>
                 <li><a href="${pageContext.request.contextPath}/danmu">弹幕留言</a></li>
+                <li><a href="${pageContext.request.contextPath}/note">笔记</a></li>
             </ul>
         </div>
     </div>

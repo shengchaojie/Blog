@@ -5,6 +5,7 @@ package com.scj.common.exception;
  */
 public enum StatusCode {
 
+    OK(200,"处理成功"),
     USER_NOT_EXISTED(1,"该用户不存在"),
     USER_REGISTERED_ALREADY(2,"用户已注册"),
     USERNAME_PASSWORD_WRONG(3,"用户名和密码错误"),

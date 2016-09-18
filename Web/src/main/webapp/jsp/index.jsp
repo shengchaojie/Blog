@@ -23,7 +23,8 @@
 </head>
 <body>
 <jsp:include page="header.jsp"/>
-<script>
+<div>随便写点什么</div>
+<%--<script>
     var count =0;
     $(function(){
         reset();
@@ -89,6 +90,6 @@
             <button class="btn btn-default" type="button" onclick="reset();">reset</button>
         </div>
     </div>
-</div>
+</div>--%>
 </body>
 </html>

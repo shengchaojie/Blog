@@ -86,17 +86,18 @@ public class UserServiceTest extends TestBase{
         userList.stream().forEach(
                 u->
                 {
+                    System.out.println(u.getId());
                     System.out.println(u.getUsername());
                     System.out.println(u.getPassword());
                 }
         );
 
-        System.out.println("the second method");
+        /*System.out.println("the second method");
 
         for (User user : users) {
             System.out.println(user.getUsername());
             System.out.println(user.getPassword());
-        }
+        }*/
     }
 
     @Test

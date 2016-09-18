@@ -1,9 +1,10 @@
 package com.scj.controller;
 
 
+import com.scj.common.exception.BusinessException;
+import com.scj.common.exception.StatusCode;
 import com.scj.common.util.EncodeDecodeUtil;
 import com.scj.hello.service.HelloService;
-import com.sun.xml.internal.ws.encoding.ContentType;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -17,7 +18,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import javax.annotation.Resource;
-import javax.net.ssl.HttpsURLConnection;
 import javax.servlet.http.HttpServletRequest;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -38,17 +38,16 @@ public class HelloController {
     @RequestMapping("/hello")
     public String hello()
     {
-        //helloService.hello("scj");
-        /*if(1==1)
-        {
-            //throw new RuntimeException("123");
-            throw new BusinessException(StatusCode.USER_NOT_EXISTED);
-        }*/
-
         return "index";
     }
 
-    @RequestMapping("/")
+    @RequestMapping("/exception")
+    public void exception()
+    {
+        throw new BusinessException(StatusCode.USER_NOT_EXISTED);
+    }
+
+    @RequestMapping("/**")
     public String index()
     {
         return "index";
@@ -58,6 +57,12 @@ public class HelloController {
     public String danmu()
     {
         return "danmu";
+    }
+
+    @RequestMapping("/note")
+    public String note()
+    {
+        return "note";
     }
 
     @RequestMapping("/cache")

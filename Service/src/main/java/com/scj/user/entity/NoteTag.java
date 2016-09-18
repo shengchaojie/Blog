@@ -1,5 +1,9 @@
 package com.scj.user.entity;
 
+import org.hibernate.annotations.Fetch;
+import org.hibernate.annotations.FetchMode;
+import org.springframework.context.annotation.Lazy;
+
 import javax.persistence.*;
 import java.util.Date;
 import java.util.HashSet;
@@ -18,7 +22,7 @@ public class NoteTag {
     @Column(name = "tag_name")
     private String tagName;
 
-    @ManyToOne(fetch =FetchType.EAGER)
+    @ManyToOne()
     @JoinColumn(name="user_id",nullable = false)
     private User user ;
 
