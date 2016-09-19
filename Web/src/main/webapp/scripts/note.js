@@ -31,19 +31,30 @@ var NoteTag =React.createClass({
 });
 
 var NoteHeader =React.createClass({
+    onAllClick:function () {
+      this.props.handleAllSelect();
+
+    },
     render:function(){
         return (
             <div className="row noteRow">
+                <div className="noteTag">
+                    {
+                        (function () {
+                            return  (<button className="btn btn-default btn-danger" onClick={this.onAllClick.bind(this)}>全部</button>);
+                        }.bind(this))()
+                    }
+                </div>
             {
-            (function(){
-                var self =this;
-                return self.props.tags.map(function(tag){
-                    return (
-                        <NoteTag tag={tag} handleTagClick={self.props.handleTagClick}/>
-                    );
-                })
-            }.bind(this))()
-    }
+                (function(){
+                    var self =this;
+                    return self.props.tags.map(function(tag){
+                        return (
+                            <NoteTag tag={tag} handleTagClick={self.props.handleTagClick}/>
+                        );
+                    })
+                }.bind(this))()
+            }
         </div>
         );
     }
@@ -78,58 +89,75 @@ var NoteBody =React.createClass({
     }
 });
 
-var App =React.createClass({
-    getInitialState:function(){
-        var tags =$.parseJSON('[{"tagId":1,"tagName":"标签1","selected":true},{"tagId":2,"tagName":"标签2","selected":true}]');
-        var notes =$.parseJSON('[{"title":"这是一个标题","author":"盛超杰","createTime":"2016年9月19日","tagId":2},{"title":"这是一个标题","author":"盛超杰","createTime":"2016年9月19日","tagId":1}]');
-
-        console.log(tags);
-        console.log(notes);
-        return {tags:tags,notes:notes};
+var App= React.createClass({
+    getInitialState: function () {
+        var tags = [];
+        var notes = [];
+        //console.log(tags);
+        //console.log(notes);
+        return {tags: tags, notes: notes,isAll:false};
     },
 
-    handleTagClick:function(tagId){
-        var selectedTagIds =[];
+    handleTagClick: function (tagId) {
 
-        var newTags =this.state.tags.map(function(tag){
-            console.log(tag);
-            if(tag.tagId==tagId)
-            {
-                tag.selected =!tag.selected ;
-            }
-            if(tag.selected==true)
-            {
-                selectedTagIds.push(tag.tagId);
+        var newTags = this.state.tags.map(function (tag) {
+            //console.log(tag);
+            if (tag.tagId == tagId) {
+                tag.selected = !tag.selected;
             }
             return tag;
         });
-        var newNotes=[];
-        this.state.notes.map(function(note){
-            if(selectedTagIds.indexOf(note.tagId)>-1)
-            {
-                newNotes.push(note);
-            }
-        });
-        console.log(newNotes);
+
+        $.post(context+"/note/getAll",{tags:this.getSelectedTagIds()},function(result){
+            this.setState({
+                'tags': newTags,
+                'notes': result
+            });
+        }.bind(this));
+    },
+    handleAllSelect:function () {
+        var newTags = this.state.tags.map(function (tag) {
+            tag.selected =this.state.isAll;
+            return tag;
+        }.bind(this));
+        console.log(newTags);
         this.setState({
-            'tags':newTags,
-            'notes':this.state.notes.concat(newNotes)
+            'tags': newTags,
+            'isAll':!this.state.isAll
         });
     },
-    render:function(){
+    componentDidMount:function(){
+        $.get(context+"/note/noteTag/getAll",function(result){
+            if(this.isMounted())
+            {
+                result.forEach(t=>t.selected =false);
+                //console.log(result);
+                this.setState({tags:result});
+            }
+        }.bind(this));
+
+        $.post(context+"/note/getAll",{tags:this.getSelectedTagIds()},function(result){
+            this.setState({
+                'notes': result
+            });
+        }.bind(this));
+       //return  $.parseJSON('[{"tagId":1,"tagName":"标签1","selected":true},{"tagId":2,"tagName":"标签2","selected":true}]');
+    },
+    getSelectedTagIds:function () {
+        var selectedTagIds = [];
+        this.state.tags.forEach(function (tag) {
+            if (tag.selected == true) {
+                selectedTagIds.push(tag.tagId);
+            }
+        });
+        return selectedTagIds.join(',');
+    },
+    render: function () {
         return (
             <div className="container-fluid">
-            <NoteHeader tags={this.state.tags} handleTagClick={this.handleTagClick}/>
-        <NoteBody notes={this.state.notes}/>
-        </div>
-        );
-    }
-});
-
-var HelloWorld =React.createClass({
-    render:function(){
-        return (
-        <div>Hello,World</div>
+                <NoteHeader tags={this.state.tags} handleTagClick={this.handleTagClick} handleAllSelect={this.handleAllSelect}/>
+                <NoteBody notes={this.state.notes}/>
+            </div>
         );
     }
 });

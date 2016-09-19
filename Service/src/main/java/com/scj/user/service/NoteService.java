@@ -16,5 +16,5 @@ public interface NoteService {
 
     void addNote(String title,String content,Integer userId,Integer tagId);
     void deleteNote(Integer noteId);
-    List<Note> queryNote(Integer userId);
+    List<Note> queryNote(Integer userId,List<Integer> tagIds);
 }

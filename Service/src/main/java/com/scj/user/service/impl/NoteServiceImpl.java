@@ -2,6 +2,7 @@ package com.scj.user.service.impl;
 
 import com.scj.common.exception.BusinessException;
 import com.scj.common.exception.StatusCode;
+import com.scj.common.util.StringUtils;
 import com.scj.user.entity.Note;
 import com.scj.user.entity.NoteTag;
 import com.scj.user.entity.User;
@@ -16,10 +17,7 @@ import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
-import java.util.Date;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 
 /**
  * Created by shengcj on 2016/9/14.
@@ -113,7 +111,15 @@ public class NoteServiceImpl implements NoteService{
     }
 
     @Override
-    public List<Note> queryNote(Integer userId) {
-        return noteRepository.findByUserId(userId);
+    public List<Note> queryNote(Integer userId,List<Integer> tagIds) {
+        if(tagIds==null||tagIds.size()==0)
+        {
+            return noteRepository.findByUserId(userId);
+            //return new ArrayList<>();
+        }else {
+            return noteTagRepository.findByUserIdAndTagIds(userId,tagIds);
+        }
+
+
     }
 }
