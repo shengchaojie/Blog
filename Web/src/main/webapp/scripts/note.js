@@ -54,7 +54,8 @@ var NoteBody =React.createClass({
         return (
             <div className="row noteRow">
             <table className="table table-condensed table-hover" >
-            <tr className="success">
+                <tbody>
+            <tr>
             <th>标题</th>
             <th>作者</th>
             <th>时间</th>
@@ -64,12 +65,13 @@ var NoteBody =React.createClass({
                 return (
                     <tr>
                     <td>{note.title}</td>
-                <td>{note.author}</td>
-                <td>{note.createTime}</td>
-                </tr>
+                    <td>{note.author}</td>
+                    <td>{note.createTime}</td>
+                    </tr>
                 );
             })
     }
+                </tbody>
         </table>
         </div>
         );
@@ -81,8 +83,8 @@ var App =React.createClass({
         var tags =$.parseJSON('[{"tagId":1,"tagName":"标签1","selected":true},{"tagId":2,"tagName":"标签2","selected":true}]');
         var notes =$.parseJSON('[{"title":"这是一个标题","author":"盛超杰","createTime":"2016年9月19日","tagId":2},{"title":"这是一个标题","author":"盛超杰","createTime":"2016年9月19日","tagId":1}]');
 
-        //console.log(tags);
-        //console.log(notes);
+        console.log(tags);
+        console.log(notes);
         return {tags:tags,notes:notes};
     },
 
@@ -110,7 +112,8 @@ var App =React.createClass({
         });
         console.log(newNotes);
         this.setState({
-            tags:newTags
+            'tags':newTags,
+            'notes':this.state.notes.concat(newNotes)
         });
     },
     render:function(){
