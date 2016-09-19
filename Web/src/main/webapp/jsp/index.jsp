@@ -10,20 +10,21 @@
 <head>
     <title>首页2</title>
     <style>
-        .pocker{
-            width:33%;
-            height:33%;
-            margin:2px;
+        .noteRow{
+            padding :10px
         }
-        .poker-container{
-            width:50%;
-            height:80%;
+        .noteTag
+        {
+            margin: 0 5px;
+            float:left;
         }
     </style>
+
 </head>
 <body>
 <jsp:include page="header.jsp"/>
-<div>随便写点什么</div>
+<div id="container"></div>
+<script type="text/babel" src="${pageContext.request.contextPath}/scripts/note.js"/>
 <%--<script>
     var count =0;
     $(function(){
