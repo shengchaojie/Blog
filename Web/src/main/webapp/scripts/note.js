@@ -9,23 +9,8 @@ var NoteTag =React.createClass({
     render:function(){
         return (
             <div className="noteTag">
-            {
-            (function(){
-                //console.log(this.props.tag.selected);
-                if(this.props.tag.selected ==true)
-                {
-                    return (
-                        <button className="btn btn-default btn-success" data-tag-id={this.props.tag.tagId} onClick={this.onClickTag.bind(this,this.props.tag.tagId)}>{this.props.tag.tagName}</button>
-                );
-                }else
-                {
-                    return (
-                        <button className="btn btn-default" data-tag-id={this.props.tag.tagId} onClick={this.onClickTag.bind(this,this.props.tag.tagId)}>{this.props.tag.tagName}</button>
-                );
-                }
-            }.bind(this))()
-    }
-        </div>
+                <button className= {this.props.tag.selected?"btn btn-default btn-success":"btn btn-default"}  data-tag-id={this.props.tag.tagId} onClick={this.onClickTag.bind(this,this.props.tag.tagId)}>{this.props.tag.tagName}</button>
+            </div>
         )
     }
 });
@@ -33,17 +18,12 @@ var NoteTag =React.createClass({
 var NoteHeader =React.createClass({
     onAllClick:function () {
       this.props.handleAllSelect();
-
     },
     render:function(){
         return (
             <div className="row noteRow">
                 <div className="noteTag">
-                    {
-                        (function () {
-                            return  (<button className="btn btn-default btn-danger" onClick={this.onAllClick.bind(this)}>全部</button>);
-                        }.bind(this))()
-                    }
+                    <button className={this.props.isAll?"btn btn-default btn-success":"btn btn-default"} onClick={this.onAllClick.bind(this)}>全部</button>
                 </div>
             {
                 (function(){
@@ -61,6 +41,9 @@ var NoteHeader =React.createClass({
 });
 
 var NoteBody =React.createClass({
+    onTitleClick:function () {
+      this.props.handleTitleClick();
+    },
     render:function(){
         return (
             <div className="row noteRow">
@@ -72,16 +55,20 @@ var NoteBody =React.createClass({
             <th>时间</th>
             </tr>
             {
-                this.props.notes.map(function(note){
-                return (
-                    <tr>
-                    <td>{note.title}</td>
-                    <td>{note.author}</td>
-                    <td>{note.createTime}</td>
-                    </tr>
-                );
-            })
-    }
+                (function(){
+                    var self =this;
+                    return this.props.notes.map(function(note){
+                        return (
+                            <tr>
+                                <td><div onClick={self.onTitleClick}>{note.title}</div></td>
+                                <td>{note.author}</td>
+                                <td>{note.createTime}</td>
+                            </tr>
+                        );
+                    })
+                }.bind(this))()
+
+            }
                 </tbody>
         </table>
         </div>
@@ -95,7 +82,7 @@ var App= React.createClass({
         var notes = [];
         //console.log(tags);
         //console.log(notes);
-        return {tags: tags, notes: notes,isAll:false};
+        return {tags: tags, notes: notes,isAll:true};
     },
 
     handleTagClick: function (tagId) {
@@ -108,23 +95,41 @@ var App= React.createClass({
             return tag;
         });
 
-        $.post(context+"/note/getAll",{tags:this.getSelectedTagIds()},function(result){
+        $.post(context+"/note/getByTagIds",{tags:this.getSelectedTagIds()},function(result){
             this.setState({
                 'tags': newTags,
-                'notes': result
+                'notes': result,
+                isAll:false
             });
         }.bind(this));
     },
     handleAllSelect:function () {
         var newTags = this.state.tags.map(function (tag) {
-            tag.selected =this.state.isAll;
+            if(!this.state.isAll) {
+                tag.selected = false;
+            }
             return tag;
         }.bind(this));
-        console.log(newTags);
-        this.setState({
-            'tags': newTags,
-            'isAll':!this.state.isAll
-        });
+
+        if(this.state.isAll)
+        {
+            this.setState({
+                'tags': newTags,
+                'isAll':!this.state.isAll,
+                'notes': []
+            });
+        }else {
+            $.get(context + "/note/getAll", function (result) {
+                this.setState({
+                    'tags': newTags,
+                    'isAll': !this.state.isAll,
+                    'notes': result
+                });
+            }.bind(this));
+        }
+    },
+    handleTitleClick:function () {
+        ReactDOM.render(<NoteContent content="12345" />,document.getElementById("container"));
     },
     componentDidMount:function(){
         $.get(context+"/note/noteTag/getAll",function(result){
@@ -136,7 +141,7 @@ var App= React.createClass({
             }
         }.bind(this));
 
-        $.post(context+"/note/getAll",{tags:this.getSelectedTagIds()},function(result){
+        $.get(context+"/note/getAll",function(result){
             this.setState({
                 'notes': result
             });
@@ -155,9 +160,24 @@ var App= React.createClass({
     render: function () {
         return (
             <div className="container-fluid">
-                <NoteHeader tags={this.state.tags} handleTagClick={this.handleTagClick} handleAllSelect={this.handleAllSelect}/>
-                <NoteBody notes={this.state.notes}/>
+                <NoteHeader tags={this.state.tags} isAll={this.state.isAll} handleTagClick={this.handleTagClick} handleAllSelect={this.handleAllSelect}/>
+                <NoteBody notes={this.state.notes} handleTitleClick={this.handleTitleClick}/>
             </div>
+        );
+    }
+});
+var HelloWorld =React.createClass({
+    render:function () {
+        return (
+            <div>Hello,World</div>
+        );
+    }
+});
+
+var NoteContent =React.createClass({
+    render:function () {
+        return (
+        <div>13</div>
         );
     }
 });

@@ -1,16 +1,11 @@
 package com.scj.controller;
 
-import antlr.LexerSharedInputState;
 import com.scj.bean.NoteTagVO;
 import com.scj.bean.NoteVO;
-import com.scj.common.CommonConstants;
-import com.scj.common.exception.StatusCode;
 import com.scj.common.util.AssertUtils;
-import com.scj.common.util.ObjectUtil;
 import com.scj.context.ResponseResult;
 import com.scj.user.entity.Note;
 import com.scj.user.entity.NoteTag;
-import com.scj.user.repository.NoteTagRepository;
 import com.scj.user.service.NoteService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -56,9 +51,7 @@ public class NoteController {
     @ResponseBody
     public List<NoteTagVO> getAllNoteTags( HttpSession session)
     {
-        //Integer userId =Integer.parseInt((String) session.getAttribute(CommonConstants.SESSION_USER_ID));
-
-        List<NoteTag> noteTags = noteService.queryTag(2);
+        List<NoteTag> noteTags = noteService.queryAllTag();
 
         List<NoteTagVO> noteTagVOs =new ArrayList<>();
         noteTags.stream().forEach(noteTag -> noteTagVOs.add(new NoteTagVO(noteTag.getId(),noteTag.getTagName())));
@@ -66,7 +59,7 @@ public class NoteController {
         return noteTagVOs;
     }
 
-    @RequestMapping(value = "/getAll")
+    @RequestMapping(value = "/getByTagIds")
     @ResponseBody
     public List<NoteVO> getAllNoteByTags(String tags,HttpSession session)
     {
@@ -75,8 +68,21 @@ public class NoteController {
         Arrays.stream(tagIds).forEach(t->tagIntIdS.add(Integer.valueOf(t)));
         LOGGER.debug("tags:{},tagIds,{}",tags,tagIds);
 
-        List<Note> notes= noteService.queryNote(2,tagIntIdS);
+        List<Note> notes= noteService.queryNote(tagIntIdS);
 
+        List<NoteVO> noteVOs =new ArrayList<>();
+        notes.stream().forEach(n->noteVOs.add(
+                new NoteVO(n.getTitle(),n.getUser().getNickname(),n.getCreateTime().toString(),n.getNoteTags())));
+
+        return noteVOs;
+
+    }
+
+    @RequestMapping(value = "/getAll",method = RequestMethod.GET)
+    @ResponseBody
+    public  List<NoteVO> getAllNote()
+    {
+        List<Note> notes= noteService.queryAllNote();
         List<NoteVO> noteVOs =new ArrayList<>();
         notes.stream().forEach(n->noteVOs.add(
                 new NoteVO(n.getTitle(),n.getUser().getNickname(),n.getCreateTime().toString(),n.getNoteTags())));

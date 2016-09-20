@@ -2,7 +2,6 @@ package com.scj.user.service.impl;
 
 import com.scj.common.exception.BusinessException;
 import com.scj.common.exception.StatusCode;
-import com.scj.common.util.StringUtils;
 import com.scj.user.entity.Note;
 import com.scj.user.entity.NoteTag;
 import com.scj.user.entity.User;
@@ -10,10 +9,8 @@ import com.scj.user.repository.NoteRepository;
 import com.scj.user.repository.NoteTagRepository;
 import com.scj.user.repository.UserRepository;
 import com.scj.user.service.NoteService;
-import org.hibernate.Hibernate;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
@@ -74,6 +71,11 @@ public class NoteServiceImpl implements NoteService{
     }
 
     @Override
+    public List<NoteTag> queryAllTag() {
+        return noteTagRepository.findAll();
+    }
+
+    @Override
     public List<NoteTag> queryTag(Integer userId) {
         return noteTagRepository.findByUserId(userId);
     }
@@ -111,6 +113,17 @@ public class NoteServiceImpl implements NoteService{
     }
 
     @Override
+    public List<Note> queryNote(List<Integer> tagIds) {
+        if(tagIds==null||tagIds.size()==0)
+        {
+            //return noteRepository.findAll();
+            return new ArrayList<>();
+        }else {
+            return noteTagRepository.findByTagIds(tagIds);
+        }
+    }
+
+    @Override
     public List<Note> queryNote(Integer userId,List<Integer> tagIds) {
         if(tagIds==null||tagIds.size()==0)
         {
@@ -119,7 +132,10 @@ public class NoteServiceImpl implements NoteService{
         }else {
             return noteTagRepository.findByUserIdAndTagIds(userId,tagIds);
         }
+    }
 
-
+    @Override
+    public List<Note> queryAllNote() {
+         return noteRepository.findAll();
     }
 }

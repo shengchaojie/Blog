@@ -8,23 +8,21 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" isELIgnored="false" %>
 <html>
 <head>
-    <title>首页2</title>
-    <style>
-        .noteRow{
-            padding :10px
-        }
-        .noteTag
-        {
-            margin: 0 5px;
-            float:left;
-        }
-    </style>
-
+    <title>首页</title>
 </head>
 <body>
 <jsp:include page="header.jsp"/>
-<div id="container"></div>
+<script id="editor" type="text/plain" style="width:1024px;height:500px;"></script>
+<script type="text/javascript">
+
+    //实例化编辑器
+    //建议使用工厂方法getEditor创建和引用编辑器实例，如果在某个闭包下引用该编辑器，直接调用UE.getEditor('editor')就能拿到相关的实例
+    var ue = UE.getEditor('editor');
+
+</script>
+<%--
 <script type="text/babel" src="${pageContext.request.contextPath}/scripts/note.js"/>
+--%>
 <%--<script>
     var count =0;
     $(function(){
