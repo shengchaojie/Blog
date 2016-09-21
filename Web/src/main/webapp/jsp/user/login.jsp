@@ -21,7 +21,6 @@
     </style>
 </head>
 <body>
-    <jsp:include page="../header.jsp"/>
     <div class="container login-container">
         <form:form cssClass="form-singin"  id="loginForm" action="${pageContext.request.contextPath}/user/login" method="post">
             <h2><strong>请登录</strong></h2>

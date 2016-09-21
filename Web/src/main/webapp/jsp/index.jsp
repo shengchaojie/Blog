@@ -11,14 +11,43 @@
     <title>首页</title>
 </head>
 <body>
-<jsp:include page="header.jsp"/>
-<script id="editor" type="text/plain" style="width:1024px;height:500px;"></script>
-<script type="text/javascript">
+<div id ="container">
+</div>
+<script type="text/babel">
+    var Editor = React.createClass({
+        // 编辑器样式
+        style: {
+            width: '70%',
+            height: '400px'
+        },
+        render: function() {
+            return (
+                    <div >
+                        <div id={this.props.id} style={this.style} contentEditable="true"></div>
+                        <button onClick={this.getContent}>get content</button>
+                    </div>
+            );
+        },
+        componentDidMount: function () {
+            var id = this.props.id;
+            this.editor = new window.wangEditor(id);
+            this.editor.config.uploadImgUrl = '/upload';
+            this.editor.create();
 
-    //实例化编辑器
-    //建议使用工厂方法getEditor创建和引用编辑器实例，如果在某个闭包下引用该编辑器，直接调用UE.getEditor('editor')就能拿到相关的实例
-    var ue = UE.getEditor('editor');
+            // 初始化内容
+            this.editor.$txt.html(this.props.content);
+        },
+        // 获取内容
+        getContent: function () {
+            var content = this.editor.$txt.html();
+            console.log(content);
+        }
+    });
 
+    React.render(
+            <Editor id="editor1" content="<p>在react中使用wangEditor</p>"/>,
+            document.getElementById('container')
+    );
 </script>
 <%--
 <script type="text/babel" src="${pageContext.request.contextPath}/scripts/note.js"/>

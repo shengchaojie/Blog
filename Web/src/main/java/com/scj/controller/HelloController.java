@@ -62,7 +62,13 @@ public class HelloController {
     @RequestMapping("/note")
     public String note()
     {
-        return "note";
+        return "/note/note";
+    }
+
+    @RequestMapping("/noteAdd")
+    public String noteAdd()
+    {
+        return "/note/note_add";
     }
 
     @RequestMapping("/cache")

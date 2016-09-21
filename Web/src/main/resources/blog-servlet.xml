@@ -53,6 +53,7 @@
     <mvc:resources mapping="/scripts/**" location="/scripts/"></mvc:resources>
     <mvc:resources mapping="/bootstrap/**" location="/bootstrap/"></mvc:resources>
     <mvc:resources mapping="/pics/**" location="/pics/"></mvc:resources>
+    <mvc:resources mapping="/wang/**" location="/wang/"></mvc:resources>
 
     <bean id="exceptionHandler" class="com.scj.exception.GlobalExceptionHandler"/>
 </beans>

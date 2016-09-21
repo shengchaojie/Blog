@@ -23,7 +23,6 @@
     </style>
 </head>
 <body>
-<jsp:include page="../header.jsp"/>
 <div class="container">
     <form:form cssClass="register-form form-horizontal" id="registerForm"
                action="${pageContext.request.contextPath}/user/register"

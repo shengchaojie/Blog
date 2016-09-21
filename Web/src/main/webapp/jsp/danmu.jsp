@@ -29,7 +29,6 @@
         }
     </style>
 </head>
-<jsp:include page="header.jsp"/>
 <body class="center">
 <%--<h2>Hello World!${sessionScope.username}</h2>
 <a href="${pageContext.request.contextPath}/user/view/login">login</a><br/>
