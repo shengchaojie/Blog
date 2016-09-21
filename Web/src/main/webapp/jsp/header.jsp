@@ -35,8 +35,8 @@
 
     <sitemesh:write property="head"/>
 </head>
-<body>
-<nav class="navbar navbar-default">
+<body style="padding-top: 60px;padding-bottom: 20px">
+<nav class="navbar navbar-default navbar-fixed-top">
     <div class="container-fluid">
         <div class="navbar-header">
             <a class="navbar-brand" href="#">ShengChaoJie</a>
@@ -48,10 +48,17 @@
                 <li><a href="${pageContext.request.contextPath}/user/view/login">登陆</a></li>
                 <li><a href="${pageContext.request.contextPath}/danmu">弹幕留言</a></li>
                 <li><a href="${pageContext.request.contextPath}/note">笔记</a></li>
+                <li><a href="https://github.com/shengchaojie/Blog">源码</a></li>
             </ul>
         </div>
     </div>
 </nav>
 <sitemesh:write property="body"/>
+<div class="footer ">
+    <hr/>
+   <div id="footer">
+       <center><p>shengchaojie@163.com</p></center>
+   </div>
+</div>
 </body>
 </html>
