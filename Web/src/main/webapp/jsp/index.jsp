@@ -11,7 +11,7 @@
     <title>首页</title>
 </head>
 <body>
-<div id ="container">
+<div id ="container" style="width:70%;margin: 0 auto 0 auto;height: 100%">
 </div>
 <script type="text/babel">
     var Editor = React.createClass({
@@ -24,7 +24,7 @@
             return (
                     <div >
                         <div id={this.props.id} style={this.style} contentEditable="true"></div>
-                        <button onClick={this.getContent}>get content</button>
+                        <%--<button onClick={this.getContent}>get content</button>--%>
                     </div>
             );
         },
@@ -45,7 +45,7 @@
     });
 
     React.render(
-            <Editor id="editor1" content="<p>在react中使用wangEditor</p>"/>,
+            <Editor id="editor1" content="<p>Hello,World...<img src='http://img.t.sinajs.cn/t35/style/images/common/face/ext/normal/0b/tootha_thumb.gif' style='line-height: 1;'></p><p><br></p>"/>,
             document.getElementById('container')
     );
 </script>

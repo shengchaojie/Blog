@@ -9,35 +9,11 @@
 <html>
 <head>
     <title>笔记</title>
-    <style>
-        .noteRow{
-            padding :10px
-        }
-        .noteTag
-        {
-            margin: 0 5px;
-            float:left;
-        }
-        #container{
-            width:70%;
-            margin-left:auto;
-            margin-right: auto;
-            border:1px solid #ccc;
-            height:100%;
-        }
-        .note-content{
-            margin-right: 0;
-            margin-left: 0;
-            background-color: #fff;
-            border-color: #ddd;
-            border-width: 1px;
-            border-radius: 4px 4px 0 0;
-        }
-    </style>
+    <link href="${pageContext.request.contextPath}/react/css/note.css" rel="stylesheet">
 </head>
 <body>
 <div id="container" ></div>
-<script type="text/babel" src="${pageContext.request.contextPath}/scripts/note.js"></script>
+<script type="text/babel" src="${pageContext.request.contextPath}/react/note.js"></script>
 </body>
 
     </html>

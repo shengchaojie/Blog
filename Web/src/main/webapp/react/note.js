@@ -127,7 +127,7 @@ var App= React.createClass({
                 });
             }.bind(this));
         }
-    },
+    },         
     handleTitleClick:function () {
         ReactDOM.render(<NoteContent content="12345" />,document.getElementById("container"));
     },

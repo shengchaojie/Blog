@@ -1,0 +1,62 @@
+#danmuarea {
+    position: relative;
+    background: black;
+    width: 70%;
+    height: 445px;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.ctr {
+    font-size: 1em;
+    line-height: 2em;
+}
+
+.center {
+    text-align: center;
+}
+
+#danmu {
+    width: 70%;
+    height: 445px;
+}
+
+.danmu-sender {
+    width: 70%;
+    padding-top: 10px;
+    border: 1px solid #cccccc;
+    margin-top: 10px;
+    border-radius: 4px 4px 0 0;
+}
+
+.commenter {
+    width: 70%;
+    padding: 10px;
+    border: 1px solid #cccccc;
+    margin: 10px auto 10px auto;
+
+    border-radius: 4px;
+}
+
+.commenter-item {
+    margin: 15px 0 15px;
+    border: 1px solid #cccccc;
+/ / border-radius: 4 px 4 px 0 0;
+}
+
+.commenter-item-header {
+    border-bottom: 1px solid #cccccc;
+}
+
+.commenter-item-content {
+    padding: 10px;
+    min-height: 80px;
+}
+
+.commenter-item-header-datetime {
+    margin-right: 10px;
+    float: right;
+}
+#buttonSend{
+    width:82px;
+}

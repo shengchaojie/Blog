@@ -3,76 +3,12 @@
 <html>
 <head>
     <title>弹弹弹幕</title>
-    <script>
-        var contextPath = "${pageContext.request.contextPath}";
-        var port = "${pageContext.request.serverPort}";
-    </script>
-    <style>
-        #danmuarea {
-            position: relative;
-            background: black;
-            width: 70%;
-            height: 445px;
-            margin-left: auto;
-            margin-right: auto;
-        }
-
-        .ctr {
-            font-size: 1em;
-            line-height: 2em;
-        }
-
-        .center {
-            text-align: center;
-        }
-
-        #danmu {
-            width: 70%;
-            height: 445px;
-        }
-
-        .danmu-sender {
-            width: 70%;
-            padding-top: 10px;
-            border: 1px solid #cccccc;
-            margin-top: 10px;
-            border-radius: 4px 4px 0 0;
-        }
-
-        .commenter {
-            width: 70%;
-            padding: 10px;
-            border: 1px solid #cccccc;
-            margin: 10px auto 10px auto;
-
-            border-radius: 4px;
-        }
-
-        .commenter-item {
-            margin: 15px 0 15px;
-            border: 1px solid #cccccc;
-        / / border-radius: 4 px 4 px 0 0;
-        }
-
-        .commenter-item-header {
-            border-bottom: 1px solid #cccccc;
-        }
-
-        .commenter-item-content {
-            padding: 10px;
-            min-height: 80px;
-        }
-
-        .commenter-item-header-datetime {
-            margin-right: 10px;
-            float: right;
-        }
-    </style>
+    <link rel="stylesheet" href="${pageContext.request.contextPath}/react/css/barrage.css">
 </head>
 <body class="center">
-<div id="danmuarea">
+<%--<div id="danmuarea">
     <div id="danmu"></div>
-</div>
+</div>--%>
 <%--<div class="container-fluid danmu-sender">
     <div class="row">
         <div class="form-group col-md-4">
@@ -115,12 +51,50 @@
    &lt;%&ndash; <button onclick="add()">固定测试弹幕</button>
     <button onclick="test_insert()">插入策划</button>&ndash;%&gt;
 </div>--%>
-<div id="commenter"></div>
-<script src="${pageContext.request.contextPath}/scripts/scj.danmu.js"></script>
-<script type="text/babel">
+<%--<div id ="shower"></div>
+<div id="commenter"></div>--%>
+<%--<script src="${pageContext.request.contextPath}/scripts/scj.danmu.js"></script>--%>
+<%--<script type="text/babel">
+    var Shower =React.createClass({
+        componentDidMount:function () {
+            $("#danmu").danmu({
+                left: 0,    //区域的起始位置x坐标
+                top: 0 ,  //区域的起始位置y坐标
+                height: "100%", //区域的高度
+                width: "100%", //区域的宽度
+                zindex :100, //div的css样式zindex
+                speed:10000, //弹幕速度，飞过区域的毫秒数
+                sumtime:900 , //弹幕运行总时间
+                danmuss:{}, //danmuss对象，运行时的弹幕内容
+                default_font_color:"#FFFFFF", //弹幕默认字体颜色
+                font_size_small:16, //小号弹幕的字体大小,注意此属性值只能是整数
+                font_size_big:24, //大号弹幕的字体大小
+                opacity:"0.9", //弹幕默认透明度
+                top_botton_danmu_time:6000 //顶端底端弹幕持续时间
+            });
+
+            $("#danmu").danmu("addDanmu",[
+                { text:"闲着也是闲着,那就做个弹幕留言板吧" ,color:"white",size:1,position:0,time:15}
+                ,{ text:"今天上班无聊" ,color:"yellow" ,size:1,position:1,time:5}
+                ,{ text:"发现了一个弹幕插件" , color:"red" ,size:1,position:2,time:10}
+            ]);
+
+            $('#danmu').danmu('danmuStart');
+        },
+        render:function () {
+            return (
+                    <div id="danmuarea">
+                        <div id="danmu"></div>
+                    </div>
+            );
+        }
+    });
+
+    ReactDOM.render(<Shower />, document.getElementById('shower'));
+
     var Sender = React.createClass({
         onSendClick:function () {
-            alert('test');
+            this.props.handleSendClick();
         },
         render: function () {
             return (
@@ -187,19 +161,41 @@
     });
 
     var Commenter = React.createClass({
+        handleSendClick:function () {
+            var text =$('#text').val();
+            var time =$('#danmu').data("nowTime")+1;
+            var color =$('#color').val();
+            var text_size =$('#text_size').val();
+            var position =$('#position').val();
+            var name =$('#name').val();
+            var date =new Date();
+
+            var danmuDisplay={ text:text ,color:color,size:text_size,position:position,time:time,isnew:1};
+            var danmuSave={ text:text ,color:color,size:text_size,position:position,time:time,name:name,createTime:date};
+
+            this.saveDanmu(danmuSave);
+
+            $('#danmu').danmu("addDanmu",danmuDisplay);
+
+        },
+        saveDanmu:function (danmu) {
+            $.post(contextPath+"/barrage/save",danmu,function(data){
+                var object =eval(data);
+                console.log(data.message);
+
+                //保存之后 回调刷新commenter
+                this.refreshCommenter();
+            }.bind(this));
+        },
         getInitialState: function () {
-            var comments = [{name: 'ss', date: '2016年9月21日, PM 05:36:41', content: "今晚月色真美"}, {
-                name: 'ss',
-                date: '2016年9月21日, PM 05:36:41',
-                content: "今晚月色真美"
-            }];
-            console.log(comments);
             return {
                 comments: []
             };
         },
         componentDidMount: function () {
-
+            this.refreshCommenter();
+        },
+        refreshCommenter:function () {
             $.get(context + "/barrage/comment/getAll", function (result) {
                 this.setState({comments: result});
             }.bind(this));
@@ -207,7 +203,7 @@
         render: function () {
             return (
                     <div>
-                        <Sender />
+                        <Sender handleSendClick={this.handleSendClick}/>
                         <div className="commenter">
                             {
                                 this.state.comments.map(function (comment) {
@@ -222,6 +218,9 @@
         }
     });
     ReactDOM.render(<Commenter />, document.getElementById('commenter'));
-</script>
+</script>--%>
+
+<div id="container"></div>
+<script type="text/babel" src="${pageContext.request.contextPath}/react/barrage.js"></script>
 </body>
 </html>

@@ -31,6 +31,7 @@
     <script>
         //公共定义上下文
         var context ="${pageContext.request.contextPath}";
+        var port = "${pageContext.request.serverPort}";
     </script>
 
     <sitemesh:write property="head"/>
@@ -45,7 +46,7 @@
         <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
             <ul class="nav navbar-nav">
                 <li><a href="${pageContext.request.contextPath}/hello">首页</a></li>
-                <li><a href="${pageContext.request.contextPath}/user/view/login">登陆</a></li>
+                <%--<li><a href="${pageContext.request.contextPath}/user/view/login">登陆</a></li>--%>
                 <li><a href="${pageContext.request.contextPath}/danmu">弹幕留言</a></li>
                 <li><a href="${pageContext.request.contextPath}/note">笔记</a></li>
                 <li><a href="https://github.com/shengchaojie/Blog">源码</a></li>
