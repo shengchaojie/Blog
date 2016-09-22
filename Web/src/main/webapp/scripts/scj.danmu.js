@@ -34,9 +34,14 @@ function send_danmu()
     var color =$('#color').val();
     var text_size =$('#text_size').val();
     var position =$('#position').val();
+    var name =$('#name').val();
+    var date =new Date();
+
     //var adanmu ={"text":"123","color":"green","size":"1","position":"0","time":2};
     var aDanmu_display={ text:text ,color:color,size:text_size,position:position,time:time,isnew:1};
-    var aDanmu_insert={ text:text ,color:color,size:text_size,position:position,time:time};
+    var aDanmu_insert={ text:text ,color:color,size:text_size,position:position,time:time,name:name,createTime:date};
+
+    console.log(aDanmu_insert);
 
     insert_db(aDanmu_insert);
 

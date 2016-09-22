@@ -23,6 +23,6 @@ public class BarrageServiceImpl implements BarrageService{
 
     @Override
     public List<Barrage> getBarrages() {
-        return barrageRepository.findAll();
+        return barrageRepository.findAllOrderByCreateTime();
     }
 }

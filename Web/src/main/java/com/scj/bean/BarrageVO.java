@@ -1,5 +1,7 @@
 package com.scj.bean;
 
+import java.util.Date;
+
 /**
  * Created by shengcj on 2016/7/19.
  */
@@ -21,6 +23,12 @@ public class BarrageVO {
 
     //“0”为滚动 “1” 为顶部 “2”为底部
     private String position;
+
+    //保存发弹幕人的姓名
+    private String name;
+
+    //弹幕的插入时间
+    private Date createTime;
 
     public String getPosition() {
         return position;
@@ -60,6 +68,22 @@ public class BarrageVO {
 
     public void setTime(Integer time) {
         this.time = time;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public Date getCreateTime() {
+        return createTime;
+    }
+
+    public void setCreateTime(Date createTime) {
+        this.createTime = createTime;
     }
 
     @Override

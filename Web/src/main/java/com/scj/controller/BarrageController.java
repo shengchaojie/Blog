@@ -1,5 +1,6 @@
 package com.scj.controller;
 
+import com.scj.bean.BarrageCommentVO;
 import com.scj.bean.BarrageVO;
 import com.scj.common.util.ObjectUtil;
 import com.scj.user.entity.Barrage;
@@ -44,6 +45,8 @@ public class BarrageController {
         barrage.setText(barrageVO.getText());
         barrage.setTime(barrageVO.getTime());
         barrage.setPosition(barrageVO.getPosition());
+        barrage.setName(barrageVO.getName());
+        barrage.setCreateTime(barrageVO.getCreateTime());
         
         if (barrageService.saveBarrage(barrage)) {
             // TODO: 2016/7/19 写一个返回封装类 
@@ -59,5 +62,13 @@ public class BarrageController {
     {
         List<BarrageVO> barrageVOs = ObjectUtil.convertTo(barrageService.getBarrages(),BarrageVO.class);
         return barrageVOs;
+    }
+
+    @RequestMapping(value = "/comment/getAll",method = RequestMethod.GET)
+    @ResponseBody
+    public List<BarrageCommentVO> getAllComments()
+    {
+        List<BarrageCommentVO> barrageCommentVOs =ObjectUtil.convertTo(barrageService.getBarrages(),BarrageCommentVO.class);
+        return barrageCommentVOs;
     }
 }

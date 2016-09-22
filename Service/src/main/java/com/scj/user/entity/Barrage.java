@@ -1,6 +1,7 @@
 package com.scj.user.entity;
 
 import javax.persistence.*;
+import java.util.Date;
 
 /**
  * Created by shengcj on 2016/7/19.
@@ -29,6 +30,12 @@ public class Barrage {
     //我现在弹幕的作用是个人博客相当于留言功能,所以时间存一份就行
     // 从0开始，不是实时弹幕 要实时可以用websocket 或者openfire
     private Integer time;
+
+    //保存发弹幕人的姓名
+    private String name;
+
+    //弹幕的插入时间
+    private Date createTime;
 
     public Integer getId() {
         return id;
@@ -76,6 +83,22 @@ public class Barrage {
 
     public void setPosition(String position) {
         this.position = position;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public Date getCreateTime() {
+        return createTime;
+    }
+
+    public void setCreateTime(Date createTime) {
+        this.createTime = createTime;
     }
 
     @Override
