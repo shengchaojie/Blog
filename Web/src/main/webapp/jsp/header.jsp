@@ -48,7 +48,15 @@
                 <li><a href="${pageContext.request.contextPath}/hello">首页</a></li>
                 <%--<li><a href="${pageContext.request.contextPath}/user/view/login">登陆</a></li>--%>
                 <li><a href="${pageContext.request.contextPath}/danmu">弹幕留言</a></li>
-                <li><a href="${pageContext.request.contextPath}/note">笔记</a></li>
+                <%--<li><a href="${pageContext.request.contextPath}/note">笔记</a></li>--%>
+                <li class="dropdown">
+                    <a href="#" class="dropdown-toggle" data-toggle="dropdown">笔记 <span class="caret"></span></a>
+                    <ul class="dropdown-menu" role="menu">
+                        <li><a href="${pageContext.request.contextPath}/note">所有笔记</a></li>
+                        <li><a href="#">我的笔记</a></li>
+                        <li><a href="${pageContext.request.contextPath}/noteAdd">新笔记</a></li>
+                    </ul>
+                </li>
                 <li><a href="https://github.com/shengchaojie/Blog">源码</a></li>
             </ul>
         </div>

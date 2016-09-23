@@ -63,6 +63,7 @@ public class NoteController {
     @ResponseBody
     public List<NoteVO> getAllNoteByTags(String tags,HttpSession session)
     {
+        // TODO: 2016/9/23 这边代码太挫 
         String[] tagIds = StringUtils.commaDelimitedListToStringArray(tags);
         List<Integer> tagIntIdS =new ArrayList<>();
         Arrays.stream(tagIds).forEach(t->tagIntIdS.add(Integer.valueOf(t)));

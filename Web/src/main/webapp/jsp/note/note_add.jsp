@@ -8,11 +8,14 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <html>
 <head>
-    <title>笔记增加</title>
+    <title>新笔记</title>
 </head>
 <body>
 <div id="container"></div>
 <script type="text/babel">
+    
+
+
     var HelloWorld =React.createClass({
         render:function () {
             return (
