@@ -34,6 +34,16 @@
         var port = "${pageContext.request.serverPort}";
     </script>
 
+    <style>
+        #container{
+            width:70%;
+            margin-left:auto;
+            margin-right: auto;
+            border:1px solid #ccc;
+            min-height:100%;
+            padding :10px;
+        }
+    </style>
     <sitemesh:write property="head"/>
 </head>
 <body style="padding-top: 60px;padding-bottom: 20px">
@@ -62,6 +72,7 @@
         </div>
     </div>
 </nav>
+<div id="container"></div>
 <sitemesh:write property="body"/>
 <div class="footer ">
     <hr/>

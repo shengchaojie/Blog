@@ -11,19 +11,8 @@
     <title>笔记</title>
     <link href="${pageContext.request.contextPath}/react/css/note.css" rel="stylesheet">
     <script type="text/babel" src="${pageContext.request.contextPath}/react/note.js"></script>
-    <style>
-        #container{
-            width:70%;
-            margin-left:auto;
-            margin-right: auto;
-            border:1px solid #ccc;
-            height:100%;
-        }
-    </style>
-
 </head>
 <body>
-<div id="container"></div>
 </body>
 
 </html>

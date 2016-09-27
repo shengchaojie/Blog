@@ -220,7 +220,6 @@
     ReactDOM.render(<Commenter />, document.getElementById('commenter'));
 </script>--%>
 
-<div id="container"></div>
 <script type="text/babel" src="${pageContext.request.contextPath}/react/barrage.js"></script>
 </body>
 </html>

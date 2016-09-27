@@ -175,8 +175,8 @@ var NoteContent =React.createClass({
     },
     componentDidMount:function () {
         console.log(this.props.noteId);
-        $.get(context+"/note/content/get/"+this.props.noteId,function (data) {
-            $('#noteContent').html(data);
+        $.get(context+"/note/content/get/"+this.props.noteId+"?"+Math.random(),function (data) {
+            $('#noteContent').html(data.object);
         });
     }
 });

@@ -30,7 +30,9 @@ public class NoteVO {
     {
         StringBuilder sb =new StringBuilder();
         noteTagSet.stream().forEach(t->sb.append(t.getId()).append(","));
-        sb.deleteCharAt(sb.length()-1);
+        if(sb.length()>0) {//可能有些文章不存在标签
+            sb.deleteCharAt(sb.length() - 1);
+        }
         this.id=id;
         this.title = title;
         this.author = author;

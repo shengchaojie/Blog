@@ -2,6 +2,7 @@ package com.scj.controller;
 
 import com.scj.bean.NoteTagVO;
 import com.scj.bean.NoteVO;
+import com.scj.common.exception.StatusCode;
 import com.scj.common.util.AssertUtils;
 import com.scj.context.ResponseResult;
 import com.scj.user.entity.Note;
@@ -78,11 +79,11 @@ public class NoteController {
 
     @RequestMapping(value = "/content/get/{id}",method = RequestMethod.GET)
     @ResponseBody
-    public String getNoteContentById(@PathVariable("id")Integer noteId)
+    public ResponseResult<String> getNoteContentById(@PathVariable("id")Integer noteId,HttpServletResponse response)
     {
         Note note =noteService.queryNoteById(noteId);
 
-        return note.getContent();
+        return new ResponseResult<>(200,"",note.getContent());
     }
 
     @RequestMapping(value = "/getByTagIds")

@@ -9,17 +9,9 @@
 <html>
 <head>
     <title>新笔记</title>
-    <style>
-        #container{
-            width:70%;
-            margin: 0 auto 0 auto;
-            //height: 100%
-        }
-    </style>
     <link href="${pageContext.request.contextPath}/react/css/note.css" rel="stylesheet">
 </head>
 <body>
-<div id="container"></div>
 <script type="text/babel">
     var Editor = React.createClass({
         // 编辑器样式
