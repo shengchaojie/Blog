@@ -8,26 +8,30 @@ import java.util.Set;
  * Created by shengchaojie on 2016/9/19.
  */
 public class NoteVO {
+    private Integer id;
     private String title;
     private String author;
     private String createTime;
     private String tagId;
+    private String content;
 
     public NoteVO() {
     }
 
-    public NoteVO(String title, String author, String createTime, String tagId) {
+    public NoteVO(Integer id,String title, String author, String createTime, String tagId) {
+        this.id=id;
         this.title = title;
         this.author = author;
         this.createTime = createTime;
         this.tagId = tagId;
     }
 
-    public NoteVO(String title, String author, String createTime, Set<NoteTag> noteTagSet)
+    public NoteVO(Integer id,String title, String author, String createTime, Set<NoteTag> noteTagSet)
     {
         StringBuilder sb =new StringBuilder();
         noteTagSet.stream().forEach(t->sb.append(t.getId()).append(","));
         sb.deleteCharAt(sb.length()-1);
+        this.id=id;
         this.title = title;
         this.author = author;
         this.createTime = createTime;
@@ -65,5 +69,21 @@ public class NoteVO {
 
     public void setTagId(String tagId) {
         this.tagId = tagId;
+    }
+
+    public String getContent() {
+        return content;
+    }
+
+    public void setContent(String content) {
+        this.content = content;
+    }
+
+    public Integer getId() {
+        return id;
+    }
+
+    public void setId(Integer id) {
+        this.id = id;
     }
 }

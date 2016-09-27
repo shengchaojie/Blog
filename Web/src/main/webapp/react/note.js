@@ -41,8 +41,8 @@ var NoteHeader =React.createClass({
 });
 
 var NoteBody =React.createClass({
-    onTitleClick:function () {
-      this.props.handleTitleClick();
+    onTitleClick:function (noteId) {
+      this.props.handleTitleClick(noteId);
     },
     render:function(){
         return (
@@ -60,7 +60,7 @@ var NoteBody =React.createClass({
                     return this.props.notes.map(function(note){
                         return (
                             <tr>
-                                <td><div onClick={self.onTitleClick}>{note.title}</div></td>
+                                <td><div onClick={self.onTitleClick.bind(this,note.id)} data-note-id ={note.id}>{note.title}</div></td>
                                 <td>{note.author}</td>
                                 <td>{note.createTime}</td>
                             </tr>
@@ -128,8 +128,8 @@ var App= React.createClass({
             }.bind(this));
         }
     },         
-    handleTitleClick:function () {
-        ReactDOM.render(<NoteContent content="12345" />,document.getElementById("container"));
+    handleTitleClick:function (noteId) {
+        ReactDOM.render(<NoteContent content="12345" noteId={noteId}/>,document.getElementById("container"));
     },
     componentDidMount:function(){
         $.get(context+"/note/noteTag/getAll",function(result){
@@ -166,20 +166,19 @@ var App= React.createClass({
         );
     }
 });
-var HelloWorld =React.createClass({
-    render:function () {
-        return (
-            <div>Hello,World</div>
-        );
-    }
-});
 
 var NoteContent =React.createClass({
     render:function () {
         return (
-        <div>13</div>
+        <div id="noteContent"></div>
         );
+    },
+    componentDidMount:function () {
+        console.log(this.props.noteId);
+        $.get(context+"/note/content/get/"+this.props.noteId,function (data) {
+            $('#noteContent').html(data);
+        });
     }
 });
 
-ReactDOM.render(<App />,document.getElementById("container"));
+React.render(<App />, document.getElementById("container"));

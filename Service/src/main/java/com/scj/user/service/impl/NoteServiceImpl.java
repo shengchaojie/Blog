@@ -9,6 +9,7 @@ import com.scj.user.repository.NoteRepository;
 import com.scj.user.repository.NoteTagRepository;
 import com.scj.user.repository.UserRepository;
 import com.scj.user.service.NoteService;
+import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
@@ -81,28 +82,30 @@ public class NoteServiceImpl implements NoteService{
     }
 
     @Override
-    public void addNote(String title, String content, Integer userId, Integer tagId) {
+    public void addNote(String title, String content, Integer userId, String tagIds) {
         User user =userRepository.findOne(userId);
         if(user==null)
         {
             LOGGER.info("该用户不存在 userId={}",userId);
             throw new BusinessException(StatusCode.USER_NOT_EXISTED);
         }
-
+        String[] tags = StringUtils.splitByWholeSeparator(tagIds,",");
         Set<NoteTag> noteTags =new HashSet<>();
-        NoteTag noteTag =noteTagRepository.getOne(tagId);
-        if(noteTag==null)
-        {
-            LOGGER.info("该标签不存在 tagId={}",tagId);
-            throw new BusinessException(StatusCode.NOTE_TAG_NOT_EXISTED);
+        for(String tagId :tags) {
+            NoteTag noteTag = noteTagRepository.getOne(Integer.parseInt(tagId));
+            if (noteTag == null) {
+                LOGGER.info("该标签不存在 tagId={}", tagId);
+                throw new BusinessException(StatusCode.NOTE_TAG_NOT_EXISTED);
+            }
+            noteTags.add(noteTag);
         }
-        noteTags.add(noteTag);
-
         Note note =new Note();
         note.setContent(content);
         note.setTitle(title);
         note.setUser(user);
         note.setNoteTags(noteTags);
+        note.setCreateTime(new Date());
+        note.setUpdateTime(new Date());
 
         noteRepository.save(note);
     }
@@ -132,6 +135,11 @@ public class NoteServiceImpl implements NoteService{
         }else {
             return noteTagRepository.findByUserIdAndTagIds(userId,tagIds);
         }
+    }
+
+    @Override
+    public Note queryNoteById(Integer id) {
+        return noteRepository.findOne(id);
     }
 
     @Override

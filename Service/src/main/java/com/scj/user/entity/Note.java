@@ -17,6 +17,7 @@ public class Note {
 
     private String title;
 
+    @Column(name = "content",length = 20000)
     private String content;
 
     @Column(name = "create_time")

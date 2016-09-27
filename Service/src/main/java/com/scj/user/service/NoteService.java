@@ -19,7 +19,7 @@ public interface NoteService {
     List<NoteTag> queryAllTag();
     List<NoteTag> queryTag(Integer userId);
 
-    void addNote(String title,String content,Integer userId,Integer tagId);
+    void addNote(String title,String content,Integer userId,String tagIds);
     void deleteNote(Integer noteId);
 
     /**
@@ -29,6 +29,8 @@ public interface NoteService {
      */
     List<Note> queryNote(List<Integer> tagIds);
     List<Note> queryNote(Integer userId,List<Integer> tagIds);
+
+    Note queryNoteById(Integer id);
 
     List<Note> queryAllNote();
 }

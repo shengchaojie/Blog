@@ -1,7 +1,5 @@
 package com.scj.service.test;
 
-import com.scj.user.repository.NoteRepository;
-import com.scj.user.repository.NoteTagRepository;
 import com.scj.user.service.NoteService;
 import com.scj.user.service.UserService;
 import org.junit.Test;
@@ -31,7 +29,7 @@ public class NoteServiceTest extends TestBase {
     @Test
     public void testAddNote()
     {
-        noteService.addNote("标题党","标题内容",2,4);
+        //noteService.addNote("标题党","标题内容",2,4);
     }
 
     @Test

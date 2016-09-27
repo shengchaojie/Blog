@@ -31,7 +31,9 @@
         componentDidMount: function () {
             var id = this.props.id;
             this.editor = new window.wangEditor(id);
-            this.editor.config.uploadImgUrl = '/upload';
+            var uploadUrl =context+"/upload";
+            console.log("上传路径:"+uploadUrl);
+            this.editor.config.uploadImgUrl = uploadUrl;
             this.editor.create();
 
             // 初始化内容
