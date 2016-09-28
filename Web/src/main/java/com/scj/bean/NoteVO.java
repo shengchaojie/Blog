@@ -88,4 +88,16 @@ public class NoteVO {
     public void setId(Integer id) {
         this.id = id;
     }
+
+    @Override
+    public String toString() {
+        return "NoteVO{" +
+                "id=" + id +
+                ", title='" + title + '\'' +
+                ", author='" + author + '\'' +
+                ", createTime='" + createTime + '\'' +
+                ", tagId='" + tagId + '\'' +
+                ", content='" + content + '\'' +
+                '}';
+    }
 }

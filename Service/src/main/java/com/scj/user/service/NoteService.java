@@ -9,7 +9,7 @@ import java.util.List;
  * Created by shengcj on 2016/9/14.
  */
 public interface NoteService {
-    void addNoteTag(String tagName,Integer userId);
+    Integer addNoteTag(String tagName,Integer userId);
     void deleteNoteTag(Integer tagId);
     void modifyNoteTagName(Integer tagId,String newTagName);
 

@@ -2,7 +2,7 @@ package com.scj.controller;
 
 import com.scj.bean.NoteTagVO;
 import com.scj.bean.NoteVO;
-import com.scj.common.exception.StatusCode;
+import com.scj.common.CommonConstants;
 import com.scj.common.util.AssertUtils;
 import com.scj.context.ResponseResult;
 import com.scj.user.entity.Note;
@@ -43,24 +43,27 @@ public class NoteController {
     @Resource
     private NoteService  noteService;
 
-    @RequestMapping("/noteTag/add/{name}")
+    @RequestMapping(value = "/noteTag/add",method = RequestMethod.POST)
     @ResponseBody
-    public ResponseResult<Boolean> addNoteTag(@PathVariable("name")String noteTagName, HttpSession session)
+    public ResponseResult<Integer> addNoteTag(@RequestParam("name")String noteTagName, HttpSession session)
     {
         AssertUtils.isStringEmpty(noteTagName);
 
-        //Integer userId =Integer.parseInt((String) session.getAttribute(CommonConstants.SESSION_USER_ID));
-        LOGGER.info("user:{},添加标签{}",noteTagName);
-        noteService.addNoteTag(noteTagName,2);
+        Integer userId =(Integer) session.getAttribute(CommonConstants.USER_ID);
+        Integer noteTagId = noteService.addNoteTag(noteTagName,userId);
+        LOGGER.info("user:{},添加标签{},noteId:{}",userId,noteTagName,noteTagId);
 
-        return new ResponseResult<>(1,"OK",true);
+        return new ResponseResult<>(1,"OK",noteTagId);
     }
 
     @RequestMapping("/add")
     @ResponseBody
-    public String addNote(NoteVO noteVO)
+    public String addNote(NoteVO noteVO,HttpSession session)
     {
-        noteService.addNote(noteVO.getTitle(),noteVO.getContent(),2,noteVO.getTagId());
+        Integer userId =(Integer) session.getAttribute(CommonConstants.USER_ID);
+        noteService.addNote(noteVO.getTitle(),noteVO.getContent(),userId,noteVO.getTagId());
+
+        LOGGER.info("uid:{},{}",userId,noteVO);
 
         return "/note";
     }
@@ -71,10 +74,17 @@ public class NoteController {
     {
         List<NoteTag> noteTags = noteService.queryAllTag();
 
-        List<NoteTagVO> noteTagVOs =new ArrayList<>();
-        noteTags.stream().forEach(noteTag -> noteTagVOs.add(new NoteTagVO(noteTag.getId(),noteTag.getTagName())));
+        return toNoteTagVoList(noteTags);
+    }
 
-        return noteTagVOs;
+    @RequestMapping(value = "/noteTag/get",method = RequestMethod.GET)
+    @ResponseBody
+    public List<NoteTagVO> getNoteTagsByUserId(HttpSession session)
+    {
+        Integer userId =(Integer) session.getAttribute(CommonConstants.USER_ID);
+        List<NoteTag> noteTags =noteService.queryTag(userId);
+
+        return toNoteTagVoList(noteTags);
     }
 
     @RequestMapping(value = "/content/get/{id}",method = RequestMethod.GET)
@@ -167,4 +177,10 @@ public class NoteController {
         return fileFolder + File.separator + fileName;
     }
 
+    public List<NoteTagVO> toNoteTagVoList(List<NoteTag> noteTags)
+    {
+        List<NoteTagVO> noteTagVOs =new ArrayList<>();
+        noteTags.forEach(noteTag -> noteTagVOs.add(new NoteTagVO(noteTag.getId(), noteTag.getTagName())));
+        return noteTagVOs;
+    }
 }

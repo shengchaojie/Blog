@@ -13,6 +13,7 @@
     <script type="text/babel" src="${pageContext.request.contextPath}/react/note.js"></script>
 </head>
 <body>
+<div id="container"></div>
 </body>
 
 </html>

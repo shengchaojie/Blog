@@ -18,6 +18,6 @@ public interface NoteTagRepository extends JpaRepository<NoteTag,Integer>{
     @Query("from Note as note left join  note.noteTags as noteTag where note.user.id =:id  and noteTag.id in (:tagIds)")
     List<Note>  findByUserIdAndTagIds(@Param("id") int userId,@Param("tagIds")List<Integer> tagIds);
 
-    @Query("from Note as note left join  note.noteTags as noteTag where  noteTag.id in (:tagIds)")
+    @Query("select distinct note from Note as note left join  note.noteTags as noteTag where  noteTag.id in (:tagIds)")
     List<Note> findByTagIds(@Param("tagIds")List<Integer> tagIds);
 }

@@ -11,7 +11,7 @@
     <title>首页</title>
 </head>
 <body>
-
+<div id="container"></div>
 <script type="text/babel">
     var Editor = React.createClass({
         // 编辑器样式

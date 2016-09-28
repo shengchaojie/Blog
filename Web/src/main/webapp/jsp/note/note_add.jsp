@@ -12,34 +12,17 @@
     <link href="${pageContext.request.contextPath}/react/css/note.css" rel="stylesheet">
 </head>
 <body>
+<div id="container"></div>
+
 <script type="text/babel">
     var Editor = React.createClass({
         // 编辑器样式
         style: {
-            width: '70%',
+            width: '100%',
             height: '400px'},
         getInitialState:function () {
             var tags = [];
             return {tags: tags};
-        },
-        render: function() {
-            return (
-                    <div>
-                        <form role="form" action="#">
-                            <div className="form-group">
-                               <input type="text" name="title" placeholder="标题" ref="title" className="form-control"/>
-                            </div>
-                            <div className="form-group">
-                                <div id={this.props.id} style={this.style} contentEditable="true"></div>
-                             </div>
-                             <div className="form-group">
-                                <NoteHeader tags={this.state.tags} handleTagClick={this.handleTagClick}/>
-                             </div>
-                             <button className="btn  btn-primary " id="publish" onClick={this.handleSubmit} >发表</button>
-                        </form>
-                        <%--<button onClick={this.getContent}>get content</button>--%>
-                    </div>
-            );
         },
         handleSubmit:function (event) {
             var title =this.refs.title.value;
@@ -75,6 +58,22 @@
             });
             this.setState({tags:newTags});
         },
+        handleNoteTagAdd:function (value) {
+            //console.log(value);
+            $.post(context+"/note/noteTag/add",{name:value},function (result) {
+                //console.log(result);
+                $('#myModal').modal('hide');
+               /* console.log(this.state.tags);
+                var newTags = $.extend(true,{},this.state.tags);//这边生成的是jquery对象并不是数组
+                console.log(newTags);*/
+
+                var newTags =this.state.tags.map(function (tag) {
+                   return $.extend(true,{},tag)
+                });
+                newTags.push({tagId:result.object,tagName:value,selected:false });
+                this.setState({tags:newTags});
+            }.bind(this))
+        },
         componentDidMount: function () {
             var id = this.props.id;
             this.editor = new window.wangEditor(id);
@@ -86,7 +85,7 @@
             // 初始化内容
             this.editor.$txt.html(this.props.content);
 
-            $.get(context+"/note/noteTag/getAll",function(result){
+            $.get(context+"/note/noteTag/get",function(result){
                 if(this.isMounted())
                 {
                     result.forEach(t=>t.selected =false);
@@ -99,6 +98,63 @@
         getContent: function () {
             var content = this.editor.$txt.html();
             console.log(content);
+        },
+        render: function() {
+            return (
+                    <div>
+                        <form role="form" action="#">
+                            <NoteTagAdder handleNoteTagAdd={this.handleNoteTagAdd}/>
+                            <div className="form-group">
+                               <input type="text" name="title" placeholder="标题" ref="title" className="form-control"/>
+                            </div>
+                            <div className="form-group">
+                                <div id={this.props.id} style={this.style} contentEditable="true"></div>
+                             </div>
+                             <div className="form-group">
+                                <NoteHeader tags={this.state.tags} handleTagClick={this.handleTagClick}/>
+                             </div>
+                             <button className="btn  btn-primary " id="publish" onClick={this.handleSubmit} >发表</button>
+                        </form>
+                        <%--<button onClick={this.getContent}>get content</button>--%>
+                    </div>
+            );
+        }
+    });
+
+    var NoteTagAdder =React.createClass({
+        onClick:function () {
+            this.props.handleNoteTagAdd(this.refs.tag.value);
+        },
+        render:function () {
+            return (
+                    <div className="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+                        <div className="modal-dialog">
+                            <div className="modal-content">
+                                <div className="modal-header">
+                                    <button type="button" className="close" data-dismiss="modal"
+                                            aria-hidden="true">×
+                                    </button>
+                                    <h4 className="modal-title" id="myModalLabel">
+                                        操作
+                                    </h4>
+                                </div>
+                                <div className="modal-body">
+                                    <div className="form-group">
+                                        <input type="text" name="title" placeholder="新增标签" ref="tag" className="form-control"/>
+                                    </div>
+                                </div>
+                                <div className="modal-footer">
+                                    <button type="button" className="btn btn-default"
+                                            data-dismiss="modal">关闭
+                                    </button>
+                                    <button type="button" className="btn btn-primary" onClick={this.onClick}>
+                                        提交
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+            );
         }
     });
 
@@ -116,6 +172,9 @@
                                 })
                             }.bind(this))()
                         }
+                        <div className="noteTag">
+                                <span className="glyphicon glyphicon-plus header-add" data-toggle="modal" data-target="#myModal" ></span>
+                        </div>
                     </div>
             );
         }

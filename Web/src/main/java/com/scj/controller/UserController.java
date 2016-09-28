@@ -1,9 +1,9 @@
 package com.scj.controller;
 
 import com.scj.bean.UserVO;
+import com.scj.common.CommonConstants;
 import com.scj.common.util.AssertUtils;
 import com.scj.context.BlogContext;
-import com.scj.context.ResponseResult;
 import com.scj.user.entity.User;
 import com.scj.user.entity.UserInfo;
 import com.scj.user.service.UserService;
@@ -14,7 +14,6 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.annotation.Resource;
 import javax.servlet.http.Cookie;
-import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.text.SimpleDateFormat;
@@ -64,9 +63,10 @@ public class UserController {
             int hash =(user.getUsername()+expireTimeFormat+user.getPassword().substring(0,3)+ BlogContext.getSalt()).hashCode();
             String uid =user.getUsername()+"|"+expireTimeFormat+"|"+hash;
 
-            Cookie cookie =new Cookie("uid",uid);
+            Cookie cookie =new Cookie(CommonConstants.USER_ID_ENCODE,uid);
             response.addCookie(cookie);
-            session.setAttribute("uid",uid);
+            session.setAttribute(CommonConstants.USER_ID_ENCODE,uid);
+            session.setAttribute(CommonConstants.USER_ID,user.getId());
             //用户权限登陆时长控制 需要在研究->设置session有效时间 在拦截器里面验证
             // TODO: 2016/7/29  都cookie免登陆了 还需要这个干吗？
 
@@ -114,7 +114,7 @@ public class UserController {
             session.invalidate();
         }
         //让cookie失效
-        Cookie cookie =new Cookie("uid","");
+        Cookie cookie =new Cookie(CommonConstants.USER_ID_ENCODE,"");
         cookie.setMaxAge(0);
         response.addCookie(cookie);
 

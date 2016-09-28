@@ -34,7 +34,7 @@ public class NoteServiceImpl implements NoteService{
     private UserRepository userRepository;
 
     @Override
-    public void addNoteTag(String tagName, Integer userId) {
+    public Integer addNoteTag(String tagName, Integer userId) {
         User user =userRepository.getOne(userId);
         if(user==null)
         {
@@ -46,8 +46,7 @@ public class NoteServiceImpl implements NoteService{
         noteTag.setTagName(tagName);
         noteTag.setUser(user);
         noteTag.setCreateTime(new Date());
-        noteTagRepository.save(noteTag);
-
+        return  noteTagRepository.save(noteTag).getId();
     }
 
     @Override

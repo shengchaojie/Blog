@@ -1,5 +1,6 @@
 package com.scj.interceptor;
 
+import com.scj.common.CommonConstants;
 import com.scj.context.BlogContext;
 import com.scj.user.service.UserService;
 import org.slf4j.Logger;
@@ -28,14 +29,14 @@ public class LoginStatusInterceptor extends HandlerInterceptorAdapter {
 
         HttpSession session = request.getSession();
         String uid = null;
-        if (session.getAttribute("uid")!=null&&(uid = session.getAttribute("uid").toString()) != null&&isUIDCorrect(uid)) {
+        if (session.getAttribute(CommonConstants.USER_ID_ENCODE)!=null&&(uid = session.getAttribute(CommonConstants.USER_ID_ENCODE).toString()) != null&&isUIDCorrect(uid)) {
             return true;
         }
 
         Cookie[] cookies = request.getCookies();
         Cookie userCookie = null;
         for (Cookie cookie : cookies) {
-            if ("uid".equals(cookie.getName())) {
+            if (CommonConstants.USER_ID_ENCODE.equals(cookie.getName())) {
                 userCookie = cookie;
                 break;
             }

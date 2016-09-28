@@ -30,25 +30,5 @@
             <a class="btn btn-lg btn-block btn-success" href="${pageContext.request.contextPath}/user/view/register" role="button">注册</a>
         </form:form>
     </div>
-    <!--这个项目不是前后端异构，所以不能这样 -->
-    <%--<script>
-        $(document).ready(function () {
-            $("#loginForm").submit(function (e) {
-                e.preventDefault();
-                $.post(
-                        "${pageContext.request.contextPath}/user/login",
-                        $("#loginForm").serialize(),
-                        function(data){
-                            if(data.code ==1)
-                            {
-                                alert(data.message);
-                            }
-                        })
-            }) ;
-        })
-    </script>--%>
-    <script>
-
-    </script>
 </body>
 </html>
