@@ -71,6 +71,13 @@ public class HelloController {
         return "/note/note_add";
     }
 
+    /*@RequestMapping("/note/content/{id}")
+    public String noteContent(@PathVariable("id")Integer id, ModelMap modelMap)
+    {
+        modelMap.addAttribute("noteId",id);
+        return "/note/note_content";
+    }*/
+
     @RequestMapping("/cache")
     public ResponseEntity<String> cache(
             HttpServletRequest request,

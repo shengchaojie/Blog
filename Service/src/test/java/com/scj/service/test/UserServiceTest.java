@@ -100,13 +100,4 @@ public class UserServiceTest extends TestBase{
         }*/
     }
 
-    @Test
-    public  void testMap()
-    {
-        User user =userRepository.findOne(9);
-        if(user.getTalks().size()>0)
-        {
-            user.getTalks().stream().forEach(t->System.out.println(t));
-        }
-    }
 }

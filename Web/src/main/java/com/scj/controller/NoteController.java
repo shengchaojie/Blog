@@ -13,7 +13,12 @@ import org.apache.commons.lang3.StringUtils;
 import org.joda.time.DateTime;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -87,13 +92,13 @@ public class NoteController {
         return toNoteTagVoList(noteTags);
     }
 
-    @RequestMapping(value = "/content/get/{id}",method = RequestMethod.GET)
-    @ResponseBody
-    public ResponseResult<String> getNoteContentById(@PathVariable("id")Integer noteId,HttpServletResponse response)
+    @RequestMapping(value = "/content/{id}",method = RequestMethod.GET)
+    public String getNoteContentById(@PathVariable("id")Integer noteId, HttpServletResponse response, ModelMap modelMap)
     {
         Note note =noteService.queryNoteById(noteId);
+        modelMap.addAttribute("note",new NoteVO(note.getId(),note.getTitle(),note.getUser().getNickname(),note.getCreateTime().toString(),note.getNoteTags(),note.getContent()));
 
-        return new ResponseResult<>(200,"",note.getContent());
+        return "/note/note_content";
     }
 
     @RequestMapping(value = "/getByTagIds")
@@ -109,8 +114,8 @@ public class NoteController {
         List<Note> notes= noteService.queryNote(tagIntIdS);
 
         List<NoteVO> noteVOs =new ArrayList<>();
-        notes.stream().forEach(n->noteVOs.add(
-                new NoteVO(n.getId(),n.getTitle(),n.getUser().getNickname(),n.getCreateTime().toString(),n.getNoteTags())));
+        notes.forEach(n -> noteVOs.add(
+                new NoteVO(n.getId(), n.getTitle(), n.getUser().getNickname(), n.getCreateTime().toString(), n.getNoteTags())));
 
         return noteVOs;
     }
@@ -121,11 +126,23 @@ public class NoteController {
     {
         List<Note> notes= noteService.queryAllNote();
         List<NoteVO> noteVOs =new ArrayList<>();
-        notes.stream().forEach(n->noteVOs.add(
-                new NoteVO(n.getId(),n.getTitle(),n.getUser().getNickname(),n.getCreateTime().toString(),n.getNoteTags())));
+        notes.forEach(n -> noteVOs.add(
+                new NoteVO(n.getId(), n.getTitle(), n.getUser().getNickname(), n.getCreateTime().toString(), n.getNoteTags())));
 
         return noteVOs;
 
+    }
+
+    @RequestMapping(value = "/page/getAll")
+    @ResponseBody
+    public Page<Note> getAllNotePageable(@RequestParam(value = "page",defaultValue = "0")Integer page,
+                                         @RequestParam(value ="size" ,defaultValue = "10") Integer size)
+    {
+        Sort sort =new Sort(Sort.Direction.DESC,"createTime");
+        Pageable pageable =new PageRequest(page,size,sort);
+
+        Page<Note> temp = noteService.queryAllNote(pageable);
+        return temp;
     }
 
     @RequestMapping(value = "upload")
@@ -153,7 +170,10 @@ public class NoteController {
         File file =new File(filePath);
         uploadFile.transferTo(file);
 
-        String picUrl =StringUtils.replace(StringUtils.substringAfter(filePath,webRootPath),"\\","/");
+        //图片保存需要绝对url，相对会针对当前url加上去，会不准
+        String server ="http://"+request.getServerName()+":"+request.getServerPort()+"/"+request.getContextPath()+"/";
+        String picUrl =server+StringUtils.replace(StringUtils.substringAfter(filePath,webRootPath),"\\","/");
+        LOGGER.info("上传图片url:{}",picUrl);
 
         return picUrl;
     }
@@ -177,7 +197,7 @@ public class NoteController {
         return fileFolder + File.separator + fileName;
     }
 
-    public List<NoteTagVO> toNoteTagVoList(List<NoteTag> noteTags)
+    private List<NoteTagVO> toNoteTagVoList(List<NoteTag> noteTags)
     {
         List<NoteTagVO> noteTagVOs =new ArrayList<>();
         noteTags.forEach(noteTag -> noteTagVOs.add(new NoteTagVO(noteTag.getId(), noteTag.getTagName())));

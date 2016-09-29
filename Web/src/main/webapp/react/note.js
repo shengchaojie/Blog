@@ -1,88 +1,95 @@
 /**
  * Created by shengcj on 2016/9/19.
  */
-var NoteTag =React.createClass({
-    onClickTag:function(tagId)
-    {
+var NoteTag = React.createClass({
+    onClickTag: function (tagId) {
         this.props.handleTagClick(tagId);
     },
-    render:function(){
+    render: function () {
         return (
             <div className="noteTag">
-                <button className= {this.props.tag.selected?"btn btn-default btn-success":"btn btn-default"}  data-tag-id={this.props.tag.tagId} onClick={this.onClickTag.bind(this,this.props.tag.tagId)}>{this.props.tag.tagName}</button>
+                <button className={this.props.tag.selected ? "btn btn-default btn-success" : "btn btn-default"}
+                        data-tag-id={this.props.tag.tagId}
+                        onClick={this.onClickTag.bind(this, this.props.tag.tagId)}>{this.props.tag.tagName}</button>
             </div>
         )
     }
 });
 
-var NoteHeader =React.createClass({
-    onAllClick:function () {
-      this.props.handleAllSelect();
+var NoteHeader = React.createClass({
+    onAllClick: function () {
+        this.props.handleAllSelect();
     },
-    render:function(){
+    render: function () {
         return (
             <div className="row noteRow">
                 <div className="noteTag">
-                    <button className={this.props.isAll?"btn btn-default btn-success":"btn btn-default"} onClick={this.onAllClick.bind(this)}>全部</button>
+                    <button className={this.props.isAll ? "btn btn-default btn-success" : "btn btn-default"}
+                            onClick={this.onAllClick.bind(this)}>全部
+                    </button>
                 </div>
-            {
-                (function(){
-                    var self =this;
-                    return self.props.tags.map(function(tag){
-                        return (
-                            <NoteTag tag={tag} handleTagClick={self.props.handleTagClick}/>
-                        );
-                    })
-                }.bind(this))()
-            }
-        </div>
+                {
+                    (function () {
+                        var self = this;
+                        return self.props.tags.map(function (tag) {
+                            return (
+                                <NoteTag tag={tag} handleTagClick={self.props.handleTagClick}/>
+                            );
+                        })
+                    }.bind(this))()
+                }
+            </div>
         );
     }
 });
 
-var NoteBody =React.createClass({
-    onTitleClick:function (noteId) {
-      this.props.handleTitleClick(noteId);
+var NoteBody = React.createClass({
+    onTitleClick: function (noteId) {
+        this.props.handleTitleClick(noteId);
     },
-    render:function(){
+    render: function () {
         return (
-            <div className="row noteRow">
-            <table className="table table-condensed table-hover" >
-                <tbody>
-            <tr>
-            <th>标题</th>
-            <th>作者</th>
-            <th>时间</th>
-            </tr>
-            {
-                (function(){
-                    var self =this;
-                    return this.props.notes.map(function(note){
-                        return (
-                            <tr>
-                                <td><div onClick={self.onTitleClick.bind(this,note.id)} data-note-id ={note.id}>{note.title}</div></td>
-                                <td>{note.author}</td>
-                                <td>{note.createTime}</td>
-                            </tr>
-                        );
-                    })
-                }.bind(this))()
+            <div className="note-body">
+                <div className="row noteRow">
+                    <table className="table table-condensed table-hover">
+                        <tbody>
+                        <tr>
+                            <th width="45%">标题</th>
+                            <th width="20%">作者</th>
+                            <th width="35%">时间</th>
+                        </tr>
+                        {
+                            (function () {
+                                var self = this;
+                                return this.props.notes.map(function (note) {
+                                    return (
+                                        <tr onClick={self.onTitleClick.bind(this, note.id)}>
+                                            <td>
+                                                <div data-note-id={note.id}>{note.title}</div>
+                                            </td>
+                                            <td>{note.author}</td>
+                                            <td>{note.createTime}</td>
+                                        </tr>
+                                    );
+                                })
+                            }.bind(this))()
 
-            }
-                </tbody>
-        </table>
-        </div>
+                        }
+                        </tbody>
+                    </table>
+                </div>
+            </div>
         );
     }
 });
 
-var App= React.createClass({
+var App = React.createClass({
     getInitialState: function () {
         var tags = [];
         var notes = [];
         //console.log(tags);
         //console.log(notes);
-        return {tags: tags, notes: notes,isAll:true};
+        return {tags: tags, notes: notes, isAll: true, pageSize: 0};
     },
 
     handleTagClick: function (tagId) {
@@ -95,30 +102,29 @@ var App= React.createClass({
             return tag;
         });
 
-        $.post(context+"/note/getByTagIds",{tags:this.getSelectedTagIds()},function(result){
+        $.post(context + "/note/getByTagIds", {tags: this.getSelectedTagIds()}, function (result) {
             this.setState({
                 'tags': newTags,
                 'notes': result,
-                isAll:false
+                isAll: false
             });
         }.bind(this));
     },
-    handleAllSelect:function () {
+    handleAllSelect: function () {
         var newTags = this.state.tags.map(function (tag) {
-            if(!this.state.isAll) {
+            if (!this.state.isAll) {
                 tag.selected = false;
             }
             return tag;
         }.bind(this));
 
-        if(this.state.isAll)
-        {
+        if (this.state.isAll) {
             this.setState({
                 'tags': newTags,
-                'isAll':!this.state.isAll,
+                'isAll': !this.state.isAll,
                 'notes': []
             });
-        }else {
+        } else {
             $.get(context + "/note/getAll", function (result) {
                 this.setState({
                     'tags': newTags,
@@ -127,28 +133,24 @@ var App= React.createClass({
                 });
             }.bind(this));
         }
-    },         
-    handleTitleClick:function (noteId) {
-        ReactDOM.render(<NoteContent content="12345" noteId={noteId}/>,document.getElementById("container"));
     },
-    componentDidMount:function(){
-        $.get(context+"/note/noteTag/getAll",function(result){
-            if(this.isMounted())
-            {
-                result.forEach(t=>t.selected =false);
+    handleTitleClick: function (noteId) {
+        //ReactDOM.render(<NoteContent  noteId={noteId}/>,document.getElementById("container"));
+        window.location = context + "/note/content/" + noteId;
+    },
+    componentDidMount: function () {
+        $.get(context + "/note/noteTag/getAll", function (result) {
+            if (this.isMounted()) {
+                result.forEach(t=>t.selected = false);
                 //console.log(result);
-                this.setState({tags:result});
+                this.setState({tags: result});
             }
         }.bind(this));
 
-        $.get(context+"/note/getAll",function(result){
-            this.setState({
-                'notes': result
-            });
-        }.bind(this));
-       //return  $.parseJSON('[{"tagId":1,"tagName":"标签1","selected":true},{"tagId":2,"tagName":"标签2","selected":true}]');
+        this.getNotesByPage(0);
+        //return  $.parseJSON('[{"tagId":1,"tagName":"标签1","selected":true},{"tagId":2,"tagName":"标签2","selected":true}]');
     },
-    getSelectedTagIds:function () {
+    getSelectedTagIds: function () {
         var selectedTagIds = [];
         this.state.tags.forEach(function (tag) {
             if (tag.selected == true) {
@@ -157,25 +159,71 @@ var App= React.createClass({
         });
         return selectedTagIds.join(',');
     },
+    handlePaginationClick: function (index) {
+        this.getNotesByPage(index);
+    },
+    getNotesByPage: function (page) {
+        $.get(context + "/note/page/getAll?page=" + page + "&size=10", function (data) {
+            console.log(data);
+            var notes = [];
+            //{"id":25,"title":"243254","author":"测试2","createTime":"2016-09-28 17:15:26.0","tagId":"","content":null}
+            data.content.forEach(function (note) {
+                notes.push({
+                    id: note.id,
+                    title: note.title,
+                    author: note.user.nickname,
+                    createTime: new Date(note.createTime).toLocaleString()
+                });
+            }.bind(this));
+            this.setState({notes: notes, pageSize: data.totalPages});
+        }.bind(this))
+    },
     render: function () {
         return (
             <div className="container-fluid">
-                <NoteHeader tags={this.state.tags} isAll={this.state.isAll} handleTagClick={this.handleTagClick} handleAllSelect={this.handleAllSelect}/>
+                <NoteHeader tags={this.state.tags} isAll={this.state.isAll} handleTagClick={this.handleTagClick}
+                            handleAllSelect={this.handleAllSelect}/>
                 <NoteBody notes={this.state.notes} handleTitleClick={this.handleTitleClick}/>
+                <Pagination pages={this.state.pageSize} handlePaginationClick={this.handlePaginationClick}/>
             </div>
         );
     }
 });
 
-var NoteContent =React.createClass({
-    render:function () {
+var Pagination = React.createClass({
+    onIndexClick: function (index, event) {
+        this.props.handlePaginationClick(index);
+    },
+    render: function () {
         return (
-        <div id="noteContent"></div>
+            <div className="note-pagination">
+                <ul className="pagination">
+                    <li><a href="#">&laquo;</a></li>
+                    {
+                        (function () {
+                            var arr = [];
+                            for (var i = 1; i <= this.props.pages; i++) {
+                                arr.push(<li><a onClick={this.onIndexClick.bind(this, i - 1, event)}>{i}</a></li>);
+                            }
+                            return arr;
+                        }.bind(this))()
+                    }
+                    <li><a href="#">&raquo;</a></li>
+                </ul>
+            </div>
+        );
+    }
+});
+
+var NoteContent = React.createClass({
+    render: function () {
+        return (
+            <div id="noteContent"></div>
         );
     },
-    componentDidMount:function () {
+    componentDidMount: function () {
         console.log(this.props.noteId);
-        $.get(context+"/note/content/get/"+this.props.noteId+"?"+Math.random(),function (data) {
+        $.get(context + "/note/content/get/" + this.props.noteId + "?" + Math.random(), function (data) {
             $('#noteContent').html(data.object);
         });
     }

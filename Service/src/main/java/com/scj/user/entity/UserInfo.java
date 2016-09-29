@@ -1,6 +1,9 @@
 package com.scj.user.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+
 import javax.persistence.*;
+import java.io.Serializable;
 import java.util.Date;
 
 /**
@@ -8,7 +11,8 @@ import java.util.Date;
  */
 @Entity
 @Table(name = "user_info")
-public class UserInfo {
+@JsonIgnoreProperties(value = {"hibernateLazyInitializer","handler","fieldHandler","user"})
+public class UserInfo implements Serializable{
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Integer id;

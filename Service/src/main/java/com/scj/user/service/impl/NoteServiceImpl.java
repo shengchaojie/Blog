@@ -12,6 +12,8 @@ import com.scj.user.service.NoteService;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
@@ -144,5 +146,10 @@ public class NoteServiceImpl implements NoteService{
     @Override
     public List<Note> queryAllNote() {
          return noteRepository.findAll();
+    }
+
+    @Override
+    public Page<Note> queryAllNote(Pageable pageable) {
+        return noteRepository.findAll(pageable);
     }
 }

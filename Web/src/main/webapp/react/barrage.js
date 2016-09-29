@@ -102,7 +102,7 @@ var CommentItem = React.createClass({
             <div className="commenter-item">
                 <div className="commenter-item-header">
                     <div>{this.props.comment.name}:
-                        <div className="commenter-item-header-datetime">{ new Date(this.props.comment.createTime).toGMTString()}</div>
+                        <div className="commenter-item-header-datetime">{ new Date(this.props.comment.createTime).toLocaleString()}</div>
                     </div>
                 </div>
                 <div className="commenter-item-content">

@@ -13,6 +13,7 @@
     </title>
     <link rel="stylesheet" href="${pageContext.request.contextPath}/bootstrap/css/bootstrap.css">
     <link rel="stylesheet" href="${pageContext.request.contextPath}/bootstrap/css/bootstrap-theme.css">
+    <link rel="stylesheet" href="${pageContext.request.contextPath}/fontAwesome/css/font-awesome.min.css">
     <script src="${pageContext.request.contextPath}/scripts/jquery.js"></script>
     <script src="${pageContext.request.contextPath}/bootstrap/js/bootstrap.js"></script>
     <script src="${pageContext.request.contextPath}/scripts/jquery.danmu.js"></script>
@@ -31,7 +32,10 @@
     <script>
         //公共定义上下文
         var context ="${pageContext.request.contextPath}";
-        var port = "${pageContext.request.serverPort}";
+        //var serverName ="${pageContext.request.serverName}";
+        //var port = "${pageContext.request.serverPort}";
+        //var server ="http://"+serverName+":"+port+"/"+context;
+        //console.log(server);
     </script>
 
     <style>

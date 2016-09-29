@@ -1,14 +1,17 @@
 package com.scj.user.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+
 import javax.persistence.*;
-import java.util.List;
+import java.io.Serializable;
 
 /**
  * Created by Administrator on 2016/7/10.
  */
 @Entity
 @Table(name = "user")
-public class User {
+@JsonIgnoreProperties(value = {"hibernateLazyInitializer","handler","fieldHandler"})
+public class User implements Serializable{
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO )
     private int id;
@@ -16,8 +19,8 @@ public class User {
     private String password;
     private String nickname;
 
-    @OneToMany(mappedBy = "user",fetch = FetchType.EAGER,cascade = {CascadeType.ALL})
-    private List<Talk> talks;
+    /*@OneToMany(mappedBy = "user",fetch = FetchType.LAZY,cascade = {CascadeType.ALL})
+    private List<Talk> talks;*/
 
     @OneToOne(mappedBy = "user",fetch = FetchType.EAGER,cascade = {CascadeType.ALL})
     private UserInfo userInfo;
@@ -54,13 +57,13 @@ public class User {
         this.nickname = nickname;
     }
 
-    public List<Talk> getTalks() {
+   /* public List<Talk> getTalks() {
         return talks;
     }
 
     public void setTalks(List<Talk> talks) {
         this.talks = talks;
-    }
+    }*/
 
     public UserInfo getUserInfo() {
         return userInfo;
@@ -77,7 +80,7 @@ public class User {
                 ", username='" + username + '\'' +
                 ", password='" + password + '\'' +
                 ", nickname='" + nickname + '\'' +
-                ", talks=" + talks +
+
                 '}';
     }
 }

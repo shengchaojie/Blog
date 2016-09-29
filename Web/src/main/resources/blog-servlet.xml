@@ -51,6 +51,7 @@
     <mvc:resources mapping="/wang/**" location="/wang/"></mvc:resources>
     <mvc:resources mapping="/react/**" location="/react/"></mvc:resources>
     <mvc:resources mapping="/uploadImages/**" location="/uploadImages/"></mvc:resources>
+    <mvc:resources mapping="/fontAwesome/**" location="/fontAwesome/"></mvc:resources>
 
     <bean id="exceptionHandler" class="com.scj.exception.GlobalExceptionHandler"/>
 

@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.annotation.Resource;
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -46,7 +47,7 @@ public class BarrageController {
         barrage.setTime(barrageVO.getTime());
         barrage.setPosition(barrageVO.getPosition());
         barrage.setName(barrageVO.getName());
-        barrage.setCreateTime(barrageVO.getCreateTime());
+        barrage.setCreateTime(new Date());
         
         if (barrageService.saveBarrage(barrage)) {
             // TODO: 2016/7/19 写一个返回封装类 

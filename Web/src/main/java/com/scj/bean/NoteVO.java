@@ -26,6 +26,15 @@ public class NoteVO {
         this.tagId = tagId;
     }
 
+    public NoteVO(Integer id,String title, String author, String createTime, String tagId,String content) {
+        this.id=id;
+        this.title = title;
+        this.author = author;
+        this.createTime = createTime;
+        this.tagId = tagId;
+        this.content=content;
+    }
+
     public NoteVO(Integer id,String title, String author, String createTime, Set<NoteTag> noteTagSet)
     {
         StringBuilder sb =new StringBuilder();
@@ -39,6 +48,12 @@ public class NoteVO {
         this.createTime = createTime;
         this.tagId = sb.toString();
 
+    }
+
+    public NoteVO(Integer id,String title, String author, String createTime, Set<NoteTag> noteTagSet,String content)
+    {
+       this( id, title,  author,  createTime,  noteTagSet);
+        this.content=content;
     }
 
     public String getTitle() {

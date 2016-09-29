@@ -2,6 +2,8 @@ package com.scj.user.service;
 
 import com.scj.user.entity.Note;
 import com.scj.user.entity.NoteTag;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 
 import java.util.List;
 
@@ -33,4 +35,5 @@ public interface NoteService {
     Note queryNoteById(Integer id);
 
     List<Note> queryAllNote();
+    Page<Note> queryAllNote(Pageable pageable);
 }

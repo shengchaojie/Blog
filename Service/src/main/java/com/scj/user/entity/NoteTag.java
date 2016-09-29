@@ -1,8 +1,6 @@
 package com.scj.user.entity;
 
-import org.hibernate.annotations.Fetch;
-import org.hibernate.annotations.FetchMode;
-import org.springframework.context.annotation.Lazy;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 import javax.persistence.*;
 import java.util.Date;
@@ -14,6 +12,7 @@ import java.util.Set;
  */
 @Entity
 @Table(name = "note_tag")
+@JsonIgnoreProperties(value = {"hibernateLazyInitializer","handler","fieldHandler","notes","user"})
 public class NoteTag {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO )

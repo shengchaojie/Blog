@@ -1,5 +1,7 @@
 package com.scj.user.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+
 import javax.persistence.*;
 import java.util.Date;
 
@@ -9,6 +11,7 @@ import java.util.Date;
  */
 @Entity
 @Table(name = "barrage")
+@JsonIgnoreProperties(value = {"hibernateLazyInitializer","handler","fieldHandler"})
 public class Barrage {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO )
