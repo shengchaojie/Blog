@@ -89,7 +89,7 @@ var App = React.createClass({
         var notes = [];
         //console.log(tags);
         //console.log(notes);
-        return {tags: tags, notes: notes, isAll: true, pageSize: 0};
+        return {tags: tags, notes: notes, isAll: true, pageSize: 0,currentPage :0};
     },
 
     handleTagClick: function (tagId) {
@@ -101,37 +101,31 @@ var App = React.createClass({
             }
             return tag;
         });
-
-        $.post(context + "/note/getByTagIds", {tags: this.getSelectedTagIds()}, function (result) {
-            this.setState({
-                'tags': newTags,
-                'notes': result,
-                isAll: false
-            });
-        }.bind(this));
+        this.setState({'tags': newTags,isAll:false});
+        this.getNotesByPage(0);
     },
     handleAllSelect: function () {
-        var newTags = this.state.tags.map(function (tag) {
-            if (!this.state.isAll) {
-                tag.selected = false;
-            }
-            return tag;
-        }.bind(this));
-
         if (this.state.isAll) {
             this.setState({
-                'tags': newTags,
-                'isAll': !this.state.isAll,
+                'isAll': false,
                 'notes': []
             });
         } else {
-            $.get(context + "/note/getAll", function (result) {
-                this.setState({
-                    'tags': newTags,
-                    'isAll': !this.state.isAll,
-                    'notes': result
-                });
+            var newTags = this.state.tags.map(function (tag) {
+                if (!this.state.isAll) {
+                    tag.selected = false;
+                }
+                return tag;
             }.bind(this));
+
+            this.setState({
+                'tags': newTags,
+                'isAll': true,
+            });
+            //setState是异步的,所以到下面方法，还是false
+            //感觉分成2个方法 能让界面加载更友好
+            this.getNotesByPage(0,true);
+
         }
     },
     handleTitleClick: function (noteId) {
@@ -162,21 +156,42 @@ var App = React.createClass({
     handlePaginationClick: function (index) {
         this.getNotesByPage(index);
     },
-    getNotesByPage: function (page) {
-        $.get(context + "/note/page/getAll?page=" + page + "&size=10", function (data) {
-            console.log(data);
-            var notes = [];
-            //{"id":25,"title":"243254","author":"测试2","createTime":"2016-09-28 17:15:26.0","tagId":"","content":null}
-            data.content.forEach(function (note) {
-                notes.push({
-                    id: note.id,
-                    title: note.title,
-                    author: note.user.nickname,
-                    createTime: new Date(note.createTime).toLocaleString()
+    getNotesByPage: function (page,isAll) {
+        var note_url =context + "/note/page/getAll?";
+        var note_tag_url=context + "/note/page/byTag/get?";
+
+        if (this.state.isAll || isAll) {
+            $.get(note_url+"page=" + page + "&size=10", function (data) {
+                console.log(data);
+                this.setState({
+                    notes: this.convertToNote(data),
+                    currentPage:page,
+                    pageSize: data.totalPages
                 });
             }.bind(this));
-            this.setState({notes: notes, pageSize: data.totalPages});
-        }.bind(this))
+        }else {
+            $.get(note_tag_url+"tags="+this.getSelectedTagIds()+"&page="+page+"&size=10", function (data) {
+                this.setState({
+                    notes: this.convertToNote(data),
+                    currentPage:page,
+                    pageSize: data.totalPages
+                });
+            }.bind(this));
+        }
+
+
+    },
+    convertToNote:function (data) {
+        var notes = [];
+        data.content.forEach(function (note) {
+          notes.push({
+              id: note.id,
+              title: note.title,
+              author: note.user.nickname,
+              createTime: new Date(note.createTime).toLocaleString()
+          });
+        }.bind(this));
+        return notes;
     },
     render: function () {
         return (
@@ -184,7 +199,7 @@ var App = React.createClass({
                 <NoteHeader tags={this.state.tags} isAll={this.state.isAll} handleTagClick={this.handleTagClick}
                             handleAllSelect={this.handleAllSelect}/>
                 <NoteBody notes={this.state.notes} handleTitleClick={this.handleTitleClick}/>
-                <Pagination pages={this.state.pageSize} handlePaginationClick={this.handlePaginationClick}/>
+                <Pagination pages={this.state.pageSize} currentPage={this.state.currentPage} handlePaginationClick={this.handlePaginationClick}/>
             </div>
         );
     }
@@ -192,23 +207,32 @@ var App = React.createClass({
 
 var Pagination = React.createClass({
     onIndexClick: function (index, event) {
+        event.preventDefault();
+        if(index<0 ||index>this.props.pages-1)
+        {
+            console.log(index);
+            return;
+        }
         this.props.handlePaginationClick(index);
+
     },
     render: function () {
         return (
             <div className="note-pagination">
                 <ul className="pagination">
-                    <li><a href="#">&laquo;</a></li>
+                    <li className={this.props.currentPage==0?"disabled":""}><a  onClick={this.onIndexClick.bind(this,this.props.currentPage-1 , event)}>&laquo;</a></li>
                     {
                         (function () {
                             var arr = [];
-                            for (var i = 1; i <= this.props.pages; i++) {
-                                arr.push(<li><a onClick={this.onIndexClick.bind(this, i - 1, event)}>{i}</a></li>);
+                            console.log(this.props.currentPage);
+                            console.log(this.props.pages);
+                            for (var i = 0; i < this.props.pages; i++) {
+                                arr.push(<li className={this.props.currentPage==i?"active":""}><a onClick={this.onIndexClick.bind(this, i, event)}>{i+1}</a></li>);
                             }
                             return arr;
                         }.bind(this))()
                     }
-                    <li><a href="#">&raquo;</a></li>
+                    <li className={this.props.currentPage==this.props.pages-1?"disabled":""}><a onClick={this.onIndexClick.bind(this,this.props.currentPage+1 , event)}>&raquo;</a></li>
                 </ul>
             </div>
         );

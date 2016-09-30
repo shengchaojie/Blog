@@ -32,6 +32,7 @@ public class LoginStatusInterceptor extends HandlerInterceptorAdapter {
         if (session.getAttribute(CommonConstants.USER_ID_ENCODE)!=null&&(uid = session.getAttribute(CommonConstants.USER_ID_ENCODE).toString()) != null&&isUIDCorrect(uid)) {
             return true;
         }
+        LOGGER.debug("登录拦截时,session信息不存在");
 
         Cookie[] cookies = request.getCookies();
         Cookie userCookie = null;

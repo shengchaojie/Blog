@@ -30,6 +30,8 @@ public interface NoteService {
      * @return
      */
     List<Note> queryNote(List<Integer> tagIds);
+    Page<Note> queryNote(List<Integer> tagIds,Pageable pageable);
+
     List<Note> queryNote(Integer userId,List<Integer> tagIds);
 
     Note queryNoteById(Integer id);

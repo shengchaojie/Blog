@@ -120,6 +120,23 @@ public class NoteController {
         return noteVOs;
     }
 
+    @RequestMapping(value = "/page/byTag/get",method = RequestMethod.GET)
+    @ResponseBody
+    public Page<Note> getAllNoteByTagsAndPageable(@RequestParam(value = "tags") String tags,
+                                                    @RequestParam(value = "page",defaultValue = "0")Integer page,
+                                                  @RequestParam(value ="size" ,defaultValue = "10") Integer size)
+    {
+        String[] tagIds = StringUtils.split(tags,",");
+        List<Integer> tagIntIdS =new ArrayList<>();
+        Arrays.stream(tagIds).forEach(t->tagIntIdS.add(Integer.valueOf(t)));
+        LOGGER.debug("tags:{},tagIds,{}",tags,tagIds);
+        Sort sort =new Sort(Sort.Direction.DESC,"createTime");
+        Pageable pageable =new PageRequest(page,size,sort);
+
+        Page<Note> temp =noteService.queryNote(tagIntIdS,pageable);
+        return temp;
+    }
+
     @RequestMapping(value = "/getAll",method = RequestMethod.GET)
     @ResponseBody
     public  List<NoteVO> getAllNote()
@@ -180,7 +197,7 @@ public class NoteController {
 
     private String getFilePath(String webRootPath ,String sourceFileName)
     {
-        String baseFolder =webRootPath +"uploadImages";
+        String baseFolder =webRootPath +"/uploadImages";
         DateTime now =new DateTime(new Date());
         String fileFolder =baseFolder+ File.separator+now.toString("yyyy")
                 +File.separator+now.toString("MM")+File.separator+now.toString("dd");

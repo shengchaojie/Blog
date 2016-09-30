@@ -7,6 +7,8 @@ import com.scj.context.BlogContext;
 import com.scj.user.entity.User;
 import com.scj.user.entity.UserInfo;
 import com.scj.user.service.UserService;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -14,6 +16,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.annotation.Resource;
 import javax.servlet.http.Cookie;
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.text.SimpleDateFormat;
@@ -27,6 +30,7 @@ import java.util.Date;
 @Controller
 @RequestMapping("/user")
 public class UserController {
+    private final static Logger LOGGER = LoggerFactory.getLogger(UserController.class);
 
     @Resource
     private UserService userService;
@@ -44,7 +48,7 @@ public class UserController {
     }
 
     @RequestMapping(path = "/login",method = RequestMethod.POST)
-    public String login(String username, String password, HttpSession session,HttpServletResponse response)
+    public String login(String username, String password, HttpSession session, HttpServletRequest request, HttpServletResponse response)
     {
         AssertUtils.isStringEmpty(username);
         AssertUtils.isStringEmpty(password);
@@ -64,6 +68,9 @@ public class UserController {
             String uid =user.getUsername()+"|"+expireTimeFormat+"|"+hash;
 
             Cookie cookie =new Cookie(CommonConstants.USER_ID_ENCODE,uid);
+            cookie.setPath("/");
+            cookie.setDomain(".shengchaojie.com");
+            LOGGER.debug("设置cookie Domain:{}",request.getServerName());
             response.addCookie(cookie);
             session.setAttribute(CommonConstants.USER_ID_ENCODE,uid);
             session.setAttribute(CommonConstants.USER_ID,user.getId());

@@ -13,6 +13,7 @@ import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
@@ -124,6 +125,16 @@ public class NoteServiceImpl implements NoteService{
             return new ArrayList<>();
         }else {
             return noteTagRepository.findByTagIds(tagIds);
+        }
+    }
+
+    @Override
+    public Page<Note> queryNote(List<Integer> tagIds, Pageable pageable) {
+        if(tagIds==null||tagIds.size()==0)
+        {
+            return new PageImpl<Note>(new ArrayList<>());
+        }else {
+            return noteTagRepository.findByTagIds(tagIds,pageable);
         }
     }
 
