@@ -102,7 +102,7 @@ var App = React.createClass({
             return tag;
         });
         this.setState({'tags': newTags,isAll:false});
-        this.getNotesByPage(0);
+        this.getNotesByPage(0,false);
     },
     handleAllSelect: function () {
         if (this.state.isAll) {
@@ -160,7 +160,7 @@ var App = React.createClass({
         var note_url =context + "/note/page/getAll?";
         var note_tag_url=context + "/note/page/byTag/get?";
 
-        if (this.state.isAll || isAll) {
+        if ( typeof (isAll)=='undefined'?this.state.isAll:isAll ) {
             $.get(note_url+"page=" + page + "&size=10", function (data) {
                 console.log(data);
                 this.setState({
