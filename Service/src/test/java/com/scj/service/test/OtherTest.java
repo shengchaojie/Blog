@@ -2,10 +2,8 @@ package com.scj.service.test;
 
 import org.junit.Test;
 
-import javax.print.DocFlavor;
 import java.lang.reflect.Field;
 import java.math.BigDecimal;
-import java.util.Date;
 import java.util.Enumeration;
 import java.util.Properties;
 import java.util.TimeZone;
@@ -110,5 +108,11 @@ public class OtherTest {
     public void testGenerateDDL()
     {
 
+    }
+
+    @Test
+    public void testFomartDecimal()
+    {
+        System.out.println(String.format("%f",Double.parseDouble("42.1")));
     }
 }

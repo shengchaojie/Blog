@@ -14,4 +14,6 @@ public interface UserService {
     boolean isUserExisted(String username);
 
     User getUserByUsername(String username);
+
+    User getUserById(Integer integer);
 }

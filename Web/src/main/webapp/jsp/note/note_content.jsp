@@ -40,8 +40,34 @@
             <div class="clear"></div>
         </div>
         <hr/>
-        <div id="note-content-body">${note.content}</div>
+        <div class="note-content-body">${note.content}</div>
+        <hr/>
+        <div id="comment-container"></div>
     </div>
 </div>
+<script type="text/babel">
+    var Commenter =React.createClass({
+        getInitialState:function () {
+            var comments =[];
+
+            return {comments:comments};
+        },
+        componentDidMount:function () {
+            $.get(context+"/noteComment/getAll/${note.id}",function(result){
+                if (this.isMounted()) {
+                    console.log(result);
+                }
+            }.bind(this))
+        },
+        render:function(){
+            return (
+                <div className="note-comment">
+
+                </div>
+            );
+        }
+    });
+    React.render(<Commenter />, document.getElementById("comment-container"));
+</script>
 </body>
 </html>

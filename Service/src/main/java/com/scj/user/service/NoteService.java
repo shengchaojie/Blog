@@ -37,5 +37,8 @@ public interface NoteService {
     Note queryNoteById(Integer id);
 
     List<Note> queryAllNote();
+
     Page<Note> queryAllNote(Pageable pageable);
+
+
 }

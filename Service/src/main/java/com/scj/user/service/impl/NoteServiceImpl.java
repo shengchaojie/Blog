@@ -36,6 +36,8 @@ public class NoteServiceImpl implements NoteService{
     @Resource
     private UserRepository userRepository;
 
+
+
     @Override
     public Integer addNoteTag(String tagName, Integer userId) {
         User user =userRepository.getOne(userId);
