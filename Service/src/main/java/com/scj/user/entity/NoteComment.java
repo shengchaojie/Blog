@@ -16,7 +16,7 @@ import java.util.List;
  * 先把帖子功能完成 这个后期增加
  */
 @Entity
-@JsonIgnoreProperties(value = {"hibernateLazyInitializer","handler","fieldHandler","targetComment"})
+@JsonIgnoreProperties(value = {"hibernateLazyInitializer","handler","fieldHandler","note","childComment"})
 public class NoteComment {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO )

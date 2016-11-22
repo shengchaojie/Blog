@@ -74,6 +74,8 @@ public class UserController {
             response.addCookie(cookie);
             session.setAttribute(CommonConstants.USER_ID_ENCODE,uid);
             session.setAttribute(CommonConstants.USER_ID,user.getId());
+            session.setAttribute(CommonConstants.USER_NAME,user.getNickname());
+
             //用户权限登陆时长控制 需要在研究->设置session有效时间 在拦截器里面验证
             // TODO: 2016/7/29  都cookie免登陆了 还需要这个干吗？
 

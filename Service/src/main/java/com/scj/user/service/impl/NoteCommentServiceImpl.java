@@ -10,6 +10,7 @@ import com.scj.user.service.UserService;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -37,6 +38,7 @@ public class NoteCommentServiceImpl implements NoteCommentService {
         Note note =noteService.queryNoteById(noteId);
         noteComment.setUser(user);
         noteComment.setNote(note);
+        noteComment.setCreateTime(new Date());
 
         noteCommentRepository.save(noteComment);
     }

@@ -67,6 +67,7 @@
                 var newTags = $.extend(true,{},this.state.tags);//这边生成的是jquery对象并不是数组
                 console.log(newTags);*/
 
+               //深拷贝
                 var newTags =this.state.tags.map(function (tag) {
                    return $.extend(true,{},tag)
                 });
@@ -108,6 +109,7 @@
                                <input type="text" name="title" placeholder="标题" ref="title" className="form-control"/>
                             </div>
                             <div className="form-group">
+
                                 <div id={this.props.id} style={this.style} contentEditable="true"></div>
                              </div>
                              <div className="form-group">

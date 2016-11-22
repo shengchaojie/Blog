@@ -35,7 +35,7 @@ public class NoteCommentController {
         return new ResponseResult<>(StatusCode.OK,noteCommentService.queryAllNoteComment(noteId));
     }
 
-    @RequestMapping("/add/{noteId}")
+    @RequestMapping( "/add/{noteId}")
     @ResponseBody
     public ResponseResult<String> addNoteComment(NoteComment noteComment, @PathVariable("noteId") Integer noteId, HttpSession session)
     {
