@@ -103,17 +103,21 @@
             event.preventDefault();
 
             var comment ={};
-            comment.noteId =this.props.noteId;
+            comment.noteId =Number(this.props.noteId);
             comment.content =this.refs.comment.value;
+            //comment.user={};
+            //comment.user.nickname="${sessionScope.user_name}";
+            //comment.createTime=new Date().getTime();
+            console.log(comment);
 
-            this.props.onAddButtonClick(comment);
+            this.props.onAddButtonClick(comment,username);
         },
         render: function () {
             return (
                     <div className="note-comment-adder">
                         <form role="form" action="#">
                             <div className="form-group">
-                                <input type="text" name="comment" placeholder="评论" ref="comment" className="form-control"/>
+                                <input type="text" id="comment" name="comment" placeholder="评论" ref="comment" className="form-control"/>
                             </div>
                             <button className="btn  btn-primary " id="publish" onClick={this.handleAddButtonClick} >提交</button>
                         </form>
@@ -128,16 +132,32 @@
 
             return {comments: comments};
         },
-        onAddButtonClick:function (comment) {
-            $.post(context+"/noteComment/add/"+this.props.noteId,comment,function (result) {
-                console.log(result);
-            });
+        onAddButtonClick:function (comment,username) {
+            $.post(context+"/noteComment/add/"+comment.noteId,comment,function (result) {
+                //console.log(result);
 
-            var newComments =this.state.comments.map(function (comment) {
-                return $.extend(true,{},comment);
-            });
-            newComments.push(comment);
-            this.setState({comments:newComments});
+                //判断是否成功
+                if(result.code!=200)
+                {
+                    alert(result.message);
+                    return;
+                }
+
+                //清空发送
+                $('#comment').val('');
+
+                comment.user={};
+                comment.user.nickname=username;
+                comment.createTime=new Date().getTime();
+                var newComments =this.state.comments.map(function (comment) {
+                    return $.extend(true,{},comment);
+                });
+                newComments.push(comment);
+                //console.log(newComments);
+                this.setState({comments:newComments});
+            }.bind(this));
+
+
         },
         componentDidMount: function () {
             $.get(context + "/noteComment/getAll/${note.id}", function (result) {
@@ -151,10 +171,10 @@
             return (
 
                     <div className="note-comment">
-                        <CommentAdder noteId="${note.id}"/>
+                        <CommentAdder noteId="${note.id}" onAddButtonClick={this.onAddButtonClick}/>
                         {
                             this.state.comments.map(function (comment) {
-                                return <CommentItem comment={comment} onAddButtonClick={this.onAddButtonClick}/>
+                                return <CommentItem comment={comment} />
                             }.bind(this))
                         }
 

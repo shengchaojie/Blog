@@ -37,10 +37,10 @@ public class NoteCommentController {
 
     @RequestMapping( "/add/{noteId}")
     @ResponseBody
-    public ResponseResult<String> addNoteComment(NoteComment noteComment, @PathVariable("noteId") Integer noteId, HttpSession session)
+    public ResponseResult<String> addNoteComment(@PathVariable("noteId") String noteId,NoteComment noteComment,  HttpSession session)
     {
         Integer userId =(Integer) session.getAttribute(CommonConstants.USER_ID);
-        noteCommentService.addNoteComment(noteComment,userId,noteId);
+        noteCommentService.addNoteComment(noteComment,userId,Integer.parseInt(noteId));
 
         return  new ResponseResult<>(StatusCode.OK);
     }

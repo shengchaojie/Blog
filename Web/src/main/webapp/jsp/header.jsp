@@ -36,12 +36,13 @@
     <script>
         //公共定义上下文
         var context = "${pageContext.request.contextPath}";
+        var username ="${sessionScope.user_name}"
         //var serverName ="${pageContext.request.serverName}";
         //var port = "${pageContext.request.serverPort}";
         //var server ="http://"+serverName+":"+port+"/"+context;
         //console.log(server);
     </script>
-
+    <c:set var="username" value="${sessionScope.user_name}"></c:set>
     <style>
         #container {
             width: 70%;
@@ -58,7 +59,7 @@
 <nav class="navbar navbar-default navbar-fixed-top">
     <div class="container-fluid">
         <div class="navbar-header">
-            <a class="navbar-brand" href="#"><B>程序猿超杰</B></a>
+            <a class="navbar-brand" href="#"><B>猿超杰</B></a>
         </div>
 
         <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
