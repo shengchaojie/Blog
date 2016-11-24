@@ -29,18 +29,24 @@
         }
 
         .note-content-body {
+            border: 1px solid #cccccc;
             padding: 10px 5px;
         }
 
         .note-comment {
-            /*border:1px solid #cccccc;
-            padding: 10px;*/
+            border: 1px solid #cccccc;
+            margin-top: 10px;
+            margin-bottom: 10px;
         }
 
         .note-comment-item {
             border: 1px solid #cccccc;
-            padding: 10px;
-            margin-bottom: 10px;
+            border-bottom: 1px solid #cccccc;
+            /* padding: 10px;*/
+            margin-left: -1px;
+            margin-right: -1px;
+            margin-top: -1px;
+            /*margin-bottom: 10px;*/
         }
 
         .note-comment-head {
@@ -61,7 +67,21 @@
             min-height: 60px;
         }
 
+        .note-comment-reply {
+            text-align: center;
+        }
 
+        .note-comment-margin {
+            margin: 10px;
+        }
+
+        .note-comment-adder {
+            margin: 10px;
+        }
+
+        .note-comment-reply-adder {
+            display: none;
+        }
     </style>
 </head>
 <body>
@@ -74,14 +94,13 @@
             <div class="note-content-info-author"><i class="icon-user-md"></i> ${note.author}</div>
             <div class="clear"></div>
         </div>
-        <hr/>
         <div class="note-content-body">${note.content}</div>
     </div>
     <hr/>
     <div id="comment-container"></div>
 </div>
 <script type="text/babel">
-    var CommentItem = React.createClass({
+    var CommentItemContent = React.createClass({
         render: function () {
             return (
                     <div className="note-comment-item">
@@ -93,34 +112,82 @@
                         <div className="note-comment-body">
                             {this.props.comment.content}
                         </div>
+                        {
+                            (function () {
+                                if (this.props.comment.targetComment != null) {
+                                    return (
+                                            <div className="note-comment-margin">
+                                                <CommentItemContent comment={this.props.comment.targetComment}/>
+                                            </div>
+                                    );
+                                }
+                            }.bind(this))()
+                        }
+                    </div>
+            );
+        }
+    });
+
+    var CommentItemReplyBar = React.createClass({
+        onReplyClick: function () {
+            console.log(this.props.commentId);
+            $('#note-comment-reply-adder' + this.props.commentId).show();
+            $('#note-comment-reply-display' + this.props.commentId).hide();
+        },
+        render: function () {
+            return (
+                    <div className="note-comment-reply">
+                        <div id={"note-comment-reply-display" + this.props.commentId}
+                             className="note-comment-reply-display" onClick={this.onReplyClick}>点击回复
+                        </div>
+                        <div className="note-comment-reply-adder"
+                             id={"note-comment-reply-adder" + this.props.commentId}>
+                            <CommentAdder commentId={this.props.commentId} noteId={this.props.noteId} onAddButtonClick={this.props.onReplyButtonClick}/>
+                        </div>
+                    </div>
+            );
+        }
+    });
+
+    var CommentItem = React.createClass({
+        render: function () {
+            return (
+                    <div className="note-comment">
+                        <CommentItemContent comment={this.props.comment}/>
+                        <CommentItemReplyBar commentId={this.props.comment.id} noteId={this.props.noteId} onReplyButtonClick={this.props.onReplyButtonClick}/>
                     </div>
             );
         }
     });
 
     var CommentAdder = React.createClass({
-        handleAddButtonClick:function () {
+        handleAddButtonClick: function () {
             event.preventDefault();
 
-            var comment ={};
-            comment.noteId =Number(this.props.noteId);
-            comment.content =this.refs.comment.value;
-            //comment.user={};
-            //comment.user.nickname="${sessionScope.user_name}";
-            //comment.createTime=new Date().getTime();
-            console.log(comment);
+            var param = {};
+            param.noteId = Number(this.props.noteId);
+            param.content = this.refs.comment.value;
+            param.username = username;
+            param.commentId = Number(this.props.commentId);
+            console.log(param);
 
-            this.props.onAddButtonClick(comment,username);
+            this.props.onAddButtonClick(param);
         },
         render: function () {
             return (
                     <div className="note-comment-adder">
                         <form role="form" action="#">
-                            <div className="form-group">
-                                <input type="text" id="comment" name="comment" placeholder="评论" ref="comment" className="form-control"/>
+                            <div className="form-group col-md-10">
+                                <input type="text" id="comment" name="comment" placeholder="评论" ref="comment"
+                                       className="form-control"/>
                             </div>
-                            <button className="btn  btn-primary " id="publish" onClick={this.handleAddButtonClick} >提交</button>
+                            <div className="form-group col-md-2">
+                                <button className="btn  btn-primary " id="publish" onClick={this.handleAddButtonClick}>
+                                    提交
+                                </button>
+                            </div>
                         </form>
+                        <div className="clear"></div>
                     </div>
             );
         }
@@ -132,32 +199,51 @@
 
             return {comments: comments};
         },
-        onAddButtonClick:function (comment,username) {
-            $.post(context+"/noteComment/add/"+comment.noteId,comment,function (result) {
-                //console.log(result);
-
+        onAddButtonClick: function (param) {
+            $.post(context + "/noteComment/add/" + param.noteId, {content: param.content}, function (result) {
                 //判断是否成功
-                if(result.code!=200)
-                {
-                    alert(result.message);
+                if (result.code != 200) {
+                    if (result.code == 5)//如果是因为未登录
+                    {
+                        $('#login-modal').modal('show');
+                        return;
+                    }
+                    alert(result.message);//打印出其他错误
                     return;
                 }
 
                 //清空发送
                 $('#comment').val('');
 
-                comment.user={};
-                comment.user.nickname=username;
-                comment.createTime=new Date().getTime();
-                var newComments =this.state.comments.map(function (comment) {
-                    return $.extend(true,{},comment);
+                var newComments = this.state.comments.map(function (comment) {
+                    return $.extend(true, {}, comment);
                 });
-                newComments.push(comment);
-                //console.log(newComments);
-                this.setState({comments:newComments});
+                newComments.push(result.object);
+                this.setState({comments: newComments});
             }.bind(this));
+        },
+        onReplyButtonClick:function (param) {
+            console.log(param);
 
+            $.post(context + "/noteComment/reply/" + param.noteId, {
+                targetCommentId: param.commentId,
+                content: param.content
+            }, function (result) {
+                //判断是否成功
+                if (result.code != 200) {
+                    if (result.code == 5)//如果是因为未登录
+                    {
+                        $('#login-modal').modal('show');
+                        return;
+                    }
+                    alert(result.message);//打印出其他错误
+                    return;
+                }
 
+                $('#note-comment-reply-adder' + param.commentId).hide();
+                $('#note-comment-reply-display' + param.commentId).show();
+                this.setState({comments:result.object});
+            }.bind(this));
         },
         componentDidMount: function () {
             $.get(context + "/noteComment/getAll/${note.id}", function (result) {
@@ -170,14 +256,15 @@
         render: function () {
             return (
 
-                    <div className="note-comment">
+                    <div className="">
                         <CommentAdder noteId="${note.id}" onAddButtonClick={this.onAddButtonClick}/>
                         {
                             this.state.comments.map(function (comment) {
-                                return <CommentItem comment={comment} />
+                                return (
+                                        <CommentItem comment={comment} noteId="${note.id}" onReplyButtonClick={this.onReplyButtonClick}/>
+                                );
                             }.bind(this))
                         }
-
                     </div>
             );
         }

@@ -33,26 +33,28 @@ public class NoteCommentServiceImpl implements NoteCommentService {
     }
 
     @Override
-    public void addNoteComment(NoteComment noteComment, Integer userId, Integer noteId) {
+    public NoteComment addNoteComment(NoteComment noteComment, Integer userId, Integer noteId) {
         User user = userService.getUserById(userId);
         Note note =noteService.queryNoteById(noteId);
         noteComment.setUser(user);
         noteComment.setNote(note);
         noteComment.setCreateTime(new Date());
 
-        noteCommentRepository.save(noteComment);
+        return noteCommentRepository.save(noteComment);
     }
 
     @Override
-    public void replyNoteComment(NoteComment noteComment,Integer userId,Integer noteId) {
+    public List<NoteComment> replyNoteComment(NoteComment noteComment,Integer userId,Integer noteId,Integer targetCommentId) {
         User user = userService.getUserById(userId);
         Note note =noteService.queryNoteById(noteId);
-        NoteComment targetComment = queryNoteCommentById(noteId);
+        NoteComment targetComment = queryNoteCommentById(targetCommentId);
 
         noteComment.setTargetComment(targetComment);
         noteComment.setUser(user);
         noteComment.setNote(note);
         noteCommentRepository.save(noteComment);
+
+        return noteCommentRepository.findByNoteId(noteId);
     }
 
     @Override

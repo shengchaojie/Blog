@@ -19,12 +19,12 @@ public interface NoteCommentService {
      * 对文章新增评论
      * @param noteComment
      */
-    void addNoteComment(NoteComment noteComment,Integer userId,Integer noteId);
+    NoteComment addNoteComment(NoteComment noteComment,Integer userId,Integer noteId);
 
     /**
      * 回复评论
      */
-    void replyNoteComment(NoteComment noteComment,Integer userId,Integer noteId);
+    List<NoteComment> replyNoteComment(NoteComment noteComment,Integer userId,Integer noteId,Integer targetCommentId);
 
     /**
      * 根据id获取评论

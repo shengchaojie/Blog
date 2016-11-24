@@ -2,8 +2,10 @@ package com.scj.controller;
 
 import com.scj.bean.UserVO;
 import com.scj.common.CommonConstants;
+import com.scj.common.exception.StatusCode;
 import com.scj.common.util.AssertUtils;
 import com.scj.context.BlogContext;
+import com.scj.context.ResponseResult;
 import com.scj.user.entity.User;
 import com.scj.user.entity.UserInfo;
 import com.scj.user.service.UserService;
@@ -82,6 +84,46 @@ public class UserController {
             return "/index";
         }else {
             return "/error/error";
+        }
+    }
+
+    @RequestMapping(path = "loginModal",method = RequestMethod.POST)
+    @ResponseBody
+    private ResponseResult<String> loginInModal(String username, String password, HttpSession session, HttpServletRequest request, HttpServletResponse response)
+    {
+        // TODO: 2016/11/24 这两个方法需要抽象一下
+        AssertUtils.isStringEmpty(username);
+        AssertUtils.isStringEmpty(password);
+
+        User user =null;
+        if((user=userService.login(username,password))!= null)
+        {
+            //uid=登录名|有效时间Expires|hash值。
+            // hash值可以由"登录名+有效时间Expires+用户密码（加密后的）的前几位 +salt"
+            SimpleDateFormat sdf =new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+            Calendar calendar =Calendar.getInstance();
+            calendar.add(Calendar.DAY_OF_MONTH,2);
+            Date expireTime =calendar.getTime();
+            String expireTimeFormat =sdf.format(expireTime);
+
+            int hash =(user.getUsername()+expireTimeFormat+user.getPassword().substring(0,3)+ BlogContext.getSalt()).hashCode();
+            String uid =user.getUsername()+"|"+expireTimeFormat+"|"+hash;
+
+            Cookie cookie =new Cookie(CommonConstants.USER_ID_ENCODE,uid);
+            cookie.setPath("/");
+            cookie.setDomain(".shengchaojie.com");
+            LOGGER.debug("设置cookie Domain:{}",request.getServerName());
+            response.addCookie(cookie);
+            session.setAttribute(CommonConstants.USER_ID_ENCODE,uid);
+            session.setAttribute(CommonConstants.USER_ID,user.getId());
+            session.setAttribute(CommonConstants.USER_NAME,user.getNickname());
+
+            //用户权限登陆时长控制 需要在研究->设置session有效时间 在拦截器里面验证
+            // TODO: 2016/7/29  都cookie免登陆了 还需要这个干吗？
+
+            return new ResponseResult<>(StatusCode.OK,user.getNickname());//就先把用户的nickname返回
+        }else {
+            return new ResponseResult<>(StatusCode.USERNAME_PASSWORD_WRONG);
         }
     }
 

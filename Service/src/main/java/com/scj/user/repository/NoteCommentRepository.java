@@ -2,6 +2,8 @@ package com.scj.user.repository;
 
 import com.scj.user.entity.NoteComment;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
 
 import java.util.List;
 
@@ -10,6 +12,7 @@ import java.util.List;
  */
 public interface NoteCommentRepository  extends JpaRepository<NoteComment,Integer>{
 
-    List<NoteComment> findByNoteId(Integer noteId);
+    @Query("from NoteComment n where n.note.id =:noteId order by n.createTime desc")
+    List<NoteComment> findByNoteId(@Param("noteId") Integer noteId);
 
 }

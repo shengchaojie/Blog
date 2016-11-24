@@ -1,6 +1,8 @@
 package com.scj.controller;
 
+import com.scj.bean.NoteCommentVO;
 import com.scj.common.CommonConstants;
+import com.scj.common.exception.BusinessException;
 import com.scj.common.exception.StatusCode;
 import com.scj.context.ResponseResult;
 import com.scj.user.entity.NoteComment;
@@ -14,6 +16,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpSession;
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -37,21 +40,34 @@ public class NoteCommentController {
 
     @RequestMapping( "/add/{noteId}")
     @ResponseBody
-    public ResponseResult<String> addNoteComment(@PathVariable("noteId") String noteId,NoteComment noteComment,  HttpSession session)
+    public ResponseResult<NoteComment> addNoteComment(@PathVariable("noteId") String noteId, NoteCommentVO noteCommentVO, HttpSession session)
     {
         Integer userId =(Integer) session.getAttribute(CommonConstants.USER_ID);
-        noteCommentService.addNoteComment(noteComment,userId,Integer.parseInt(noteId));
+        if(userId==null)
+        {
+            throw new BusinessException(StatusCode.USER_NOT_LOGIN);
+        }
 
-        return  new ResponseResult<>(StatusCode.OK);
+        NoteComment noteComment =new NoteComment();
+        noteComment.setContent(noteCommentVO.getContent());
+        noteComment.setCreateTime(new Date());
+
+        return  new ResponseResult<>(StatusCode.OK,noteCommentService.addNoteComment(noteComment,userId,Integer.parseInt(noteId)));
     }
 
     @RequestMapping("/reply/{noteId}")
     @ResponseBody
-    public ResponseResult<String> replyNoteComment(NoteComment noteComment, @PathVariable("noteId") Integer noteId, HttpSession session)
+    public ResponseResult<List<NoteComment>> replyNoteComment(NoteCommentVO noteCommentVO, @PathVariable("noteId") Integer noteId, HttpSession session)
     {
         Integer userId =(Integer) session.getAttribute(CommonConstants.USER_ID);
-        noteCommentService.replyNoteComment(noteComment,userId,noteId);
+        if(userId==null)
+        {
+            throw new BusinessException(StatusCode.USER_NOT_LOGIN);
+        }
+        NoteComment noteComment =new NoteComment();
+        noteComment.setContent(noteCommentVO.getContent());
+        noteComment.setCreateTime(new Date());
 
-        return  new ResponseResult<>(StatusCode.OK);
+        return  new ResponseResult<>(StatusCode.OK,noteCommentService.replyNoteComment(noteComment,userId,noteId,noteCommentVO.getTargetCommentId()));
     }
 }

@@ -36,7 +36,7 @@
     <script>
         //公共定义上下文
         var context = "${pageContext.request.contextPath}";
-        var username ="${sessionScope.user_name}"
+        var username = "${sessionScope.user_name}"
         //var serverName ="${pageContext.request.serverName}";
         //var port = "${pageContext.request.serverPort}";
         //var server ="http://"+serverName+":"+port+"/"+context;
@@ -51,6 +51,11 @@
             border: 1px solid #ccc;
             min-height: 100%;
             padding: 10px;
+        }
+
+        .login-error-display{
+            float: left;
+            color:red;
         }
     </style>
     <sitemesh:write property="head"/>
@@ -78,26 +83,25 @@
                         <li><a href="${pageContext.request.contextPath}/noteAdd">新笔记</a></li>
                     </ul>
                 </li>
-                <li><p class="navbar-text" data-toggle="tooltip" data-placement="bottom" title="花钱花的好厉害，我要做个记钱的工具">记账本</p></li>
+                <li><p class="navbar-text" data-toggle="tooltip" data-placement="bottom" title="花钱花的好厉害，我要做个记钱的工具">
+                    记账本</p></li>
                 <li><a href="https://github.com/shengchaojie/Blog">源码</a></li>
 
             </ul>
             <ul class="nav navbar-nav navbar-right">
-                <c:choose>
-                    <c:when test="${empty sessionScope.user_name}">
-                        <li><p class="navbar-text">你可以<a data-toggle="modal" data-target="#login-modal"
-                                                         href="#login-modal">登录</a>，但是也没鸟用，嘻嘻</p></li>
-                    </c:when>
-                    <c:otherwise>
-                        <li><p class="navbar-text">${sessionScope.user_name}，别<a
-                                href="${pageContext.request.contextPath}/user/logout">离我而去</a></p></li>
-                    </c:otherwise>
-                </c:choose>
+                <li><p class="navbar-text" id="userinfo">
+                    <c:choose>
+                        <c:when test="${empty sessionScope.user_name}">
+                            你可以<a data-toggle="modal" data-target="#login-modal" href="#login-modal">登录</a>，但是也没鸟用，嘻嘻
+                        </c:when>
+                        <c:otherwise>
+                            ${sessionScope.user_name}，别<a href="${pageContext.request.contextPath}/user/logout">离我而去</a>
+                        </c:otherwise>
+                    </c:choose>
+                </p></li>
             </ul>
         </div>
     </div>
-
-
 </nav>
 
 <!-- 模态登录框-->
@@ -109,14 +113,17 @@
                 <h3><strong>请登录</strong></h3>
             </div>
             <div class="modal-body">
-                <form:form cssClass="form-singin"  id="loginForm" action="${pageContext.request.contextPath}/user/login" method="post">
-                    <input type="text" name="username" placeholder="用户名" class="form-control"/><br/>
-                    <input type="password" name="password" placeholder="密码" class="form-control"/><br/>
+                <form:form cssClass="form-singin" id="loginForm" action="${pageContext.request.contextPath}/user/login"
+                           method="post">
+                    <input type="text" id="username" name="username" placeholder="用户名" class="form-control"/><br/>
+                    <input type="password" id="password" name="password" placeholder="密码" class="form-control"/><br/>
                     <button class="btn btn-lg btn-primary btn-block" id="login" type="submit">登陆</button>
-                    <a class="btn btn-lg btn-block btn-success" href="${pageContext.request.contextPath}/user/view/register" role="button">注册</a>
+                    <a class="btn btn-lg btn-block btn-success"
+                       href="${pageContext.request.contextPath}/user/view/register" role="button">注册</a>
                 </form:form>
             </div>
             <div class="modal-footer">
+                <div class="login-error-display"></div>
                 <a href="#" class="btn" data-dismiss="modal">关闭</a>
             </div>
         </div>
@@ -133,7 +140,25 @@
 
 <script>
     //tooltip需要手动用js激活 才能使用
-    $(function () { $("[data-toggle='tooltip']").tooltip(); });
+    $(function () {
+        $("[data-toggle='tooltip']").tooltip();
+
+        $('#login').click(function () {
+
+            var data = {username: $('#username').val(), password: $('#password').val()};
+            $.post(context + '/user/loginModal', data, function (result) {
+                if (result.code == 200) {
+                    $('#login-modal').modal('hide');
+                    //刷新头信息展示
+                    $('#userinfo').html(result.object+'，别<a href="${pageContext.request.contextPath}/user/logout">离我而去</a>');
+                } else {
+                    $('.login-error-display').html(result.message);
+                }
+            });
+
+            return false;//禁用默认submit事件
+        })
+    });
 </script>
 
 </body>
