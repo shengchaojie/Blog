@@ -5,6 +5,7 @@ import com.scj.common.CommonConstants;
 import com.scj.common.exception.StatusCode;
 import com.scj.common.util.AssertUtils;
 import com.scj.context.BlogContext;
+import com.scj.context.CommonUtil;
 import com.scj.context.ResponseResult;
 import com.scj.user.entity.User;
 import com.scj.user.entity.UserInfo;
@@ -100,14 +101,7 @@ public class UserController {
         {
             //uid=登录名|有效时间Expires|hash值。
             // hash值可以由"登录名+有效时间Expires+用户密码（加密后的）的前几位 +salt"
-            SimpleDateFormat sdf =new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-            Calendar calendar =Calendar.getInstance();
-            calendar.add(Calendar.DAY_OF_MONTH,2);
-            Date expireTime =calendar.getTime();
-            String expireTimeFormat =sdf.format(expireTime);
-
-            int hash =(user.getUsername()+expireTimeFormat+user.getPassword().substring(0,3)+ BlogContext.getSalt()).hashCode();
-            String uid =user.getUsername()+"|"+expireTimeFormat+"|"+hash;
+            String uid = CommonUtil.generateUID(user.getUsername(),user.getPassword());
 
             Cookie cookie =new Cookie(CommonConstants.USER_ID_ENCODE,uid);
             cookie.setPath("/");
