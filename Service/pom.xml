@@ -137,6 +137,20 @@
             <version>2.0.0</version>
         </dependency>-->
 
+        <dependency>
+            <groupId>org.apache.commons</groupId>
+            <artifactId>commons-pool2</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>redis.clients</groupId>
+            <artifactId>jedis</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>org.springframework.data</groupId>
+            <artifactId>spring-data-redis</artifactId>
+        </dependency>
     </dependencies>
 
     <profiles>
@@ -180,34 +194,4 @@
         </resources>
     </build>
 
-    <!--<repositories>
-        <repository>
-            <id>jboss-cache</id>
-            <name>jboss-cache</name>
-            <url>http://repository.jboss.org/maven2</url>
-        </repository>
-        <repository>
-            <id>mvnsearch</id>
-            <name>mvnsearch Maven Repository</name>
-            <url>http://www.mvnsearch.org/maven2</url>
-        </repository>
-        <repository>
-            <id>ibiblio</id>
-            <name>ibiblio Maven Repository</name>
-            <url>http://www.ibiblio.org/maven2</url>
-        </repository>
-        <repository>
-            <id>mirrors.ibiblio</id>
-            <name>mirrors.ibiblio Maven Repository</name>
-            <url>http://mirrors.ibiblio.org/pub/mirrors/maven2</url>
-        </repository>
-        <repository>
-            <id>repo.springsource.org</id>
-            <name>repo.springsource.org-releases</name>
-            <url>http://repo.springsource.org/libs-milestone-local</url>
-            <snapshots>
-                <enabled>false</enabled>
-            </snapshots>
-        </repository>
-    </repositories>-->
 </project>

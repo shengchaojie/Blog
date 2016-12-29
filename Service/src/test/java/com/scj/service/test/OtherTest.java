@@ -113,6 +113,6 @@ public class OtherTest {
     @Test
     public void testFomartDecimal()
     {
-        System.out.println(String.format("%f",Double.parseDouble("42.1")));
+        System.out.println(String.format("%.2f",null));
     }
 }
