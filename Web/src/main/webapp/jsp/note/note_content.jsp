@@ -31,6 +31,7 @@
         .note-content-body {
             border: 1px solid #cccccc;
             padding: 10px 5px;
+            min-height:600px;
         }
 
         .note-comment {

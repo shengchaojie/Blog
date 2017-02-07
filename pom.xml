@@ -381,6 +381,7 @@
                 <version>2.9.4</version>
             </dependency>
 
+<<<<<<< HEAD
             <!-- cxf -->
             <dependency>
                 <groupId>org.apache.cxf</groupId>
@@ -408,6 +409,25 @@
                 <groupId>org.apache.cxf</groupId>
                 <artifactId>cxf-rt-transports-http-jetty</artifactId>
                 <version>${cxf.version}</version>
+=======
+            <!-- redis 相关-->
+            <dependency>
+                <groupId>org.apache.commons</groupId>
+                <artifactId>commons-pool2</artifactId>
+                <version>2.4.2</version>
+            </dependency>
+
+            <dependency>
+                <groupId>redis.clients</groupId>
+                <artifactId>jedis</artifactId>
+                <version>2.9.0</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.springframework.data</groupId>
+                <artifactId>spring-data-redis</artifactId>
+                <version>1.7.6.RELEASE</version>
+>>>>>>> b291409b3b5af476a1883e6b83210375d4705baf
             </dependency>
         </dependencies>
     </dependencyManagement>

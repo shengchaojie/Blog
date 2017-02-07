@@ -50,7 +50,5 @@
         <property name="maxOpenPreparedStatements" value="20" />
     </bean>
 
-    <bean class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">
-        <property name="location" value="classpath:database.properties"/>
-    </bean>
+
 </beans>
