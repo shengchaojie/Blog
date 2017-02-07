@@ -78,7 +78,13 @@ public class HelloController {
         return "/note/note_content";
     }*/
 
-    @RequestMapping("/cache")
+    /**
+     *测试方法，在浏览器控制台用下面的语句得到时间
+     *new Date().getTime()
+     * 用下面的语句来测试缓存
+     * http://localhost:8080/blog/cache/time?millis=***
+     */
+    @RequestMapping("/cache/time")
     public ResponseEntity<String> cache(
             HttpServletRequest request,
             @RequestParam("millis")long lastModifiedMillis,//为了方便测试，此处传入文档最后修改时间
@@ -105,6 +111,10 @@ public class HelloController {
 
         headers.add(HttpHeaders.LAST_MODIFIED,sdf.format(new Date(lastModifiedMillis)));
         headers.add(HttpHeaders.DATE,sdf.format(new Date(now)));
+        //EXPIRES 和CACHE_CONTROL 这2个返回值的设置能够控制浏览器的本地cache，
+        // 只要是页面内的点击重定向 都直接走本地缓存 不去服务器验证
+        //过了设置的过期时间 点击才会去服务器验证
+        //所以现在返回这2个值的时候 在页面内点击重定向 并不会向服务器发送请求
         headers.add(HttpHeaders.EXPIRES,sdf.format(new Date(now+maxAge*1000)));//HTTP1.O
         headers.add(HttpHeaders.CACHE_CONTROL,"max-age="+maxAge);//HTTP1.1
         headers.add(HttpHeaders.CONTENT_TYPE,"text/html;charset=UTF-8");

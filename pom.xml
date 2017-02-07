@@ -39,6 +39,9 @@
         <fastjson.version>1.1.40</fastjson.version>
         <guava.version>17.0</guava.version>
         <commons-lang3.version>3.3.2</commons-lang3.version>
+        <!--spring4.2.0以上需要使用cxf3.0.0以上的版本 -->
+        <!-- spring aop 也需要用到 -->
+        <cxf.version>3.1.10</cxf.version>
     </properties>
 
     <dependencyManagement>
@@ -377,6 +380,35 @@
                 <artifactId>joda-time</artifactId>
                 <version>2.9.4</version>
             </dependency>
+
+            <!-- cxf -->
+            <dependency>
+                <groupId>org.apache.cxf</groupId>
+                <artifactId>cxf-rt-frontend-jaxws</artifactId>
+                <version>${cxf.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.apache.cxf</groupId>
+                <artifactId>cxf-rt-transports-http</artifactId>
+                <version>${cxf.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.apache.cxf</groupId>
+                <artifactId>apache-cxf</artifactId>
+                <version>${cxf.version}</version>
+                <type>pom</type>
+            </dependency>
+            <dependency>
+                <groupId>org.apache.cxf</groupId>
+                <artifactId>cxf-rt-core</artifactId>
+                <version>${cxf.version}</version>
+            </dependency>
+            <!-- Jetty is needed if you're are not using the CXFServlet -->
+            <dependency>
+                <groupId>org.apache.cxf</groupId>
+                <artifactId>cxf-rt-transports-http-jetty</artifactId>
+                <version>${cxf.version}</version>
+            </dependency>
         </dependencies>
     </dependencyManagement>
 
@@ -442,6 +474,11 @@
                     <groupId>org.apache.maven.plugins</groupId>
                     <artifactId>maven-resources-plugin</artifactId>
                     <version>2.6</version>
+                </plugin>
+                <plugin>
+                    <groupId>org.eclipse.jetty</groupId>
+                    <artifactId>jetty-maven-plugin</artifactId>
+                    <version>9.4.1.v20170120</version>
                 </plugin>
             </plugins>
         </pluginManagement>

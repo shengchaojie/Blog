@@ -4,4 +4,8 @@
         <path>/*</path>
         <decorator>/jsp/header.jsp</decorator>
     </mapping>
+    <mapping exclude="true">
+        <path>/cache</path>
+        <path>/cache/*</path>
+    </mapping>
 </sitemesh>
