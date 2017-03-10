@@ -381,7 +381,6 @@
                 <version>2.9.4</version>
             </dependency>
 
-<<<<<<< HEAD
             <!-- cxf -->
             <dependency>
                 <groupId>org.apache.cxf</groupId>
@@ -404,12 +403,7 @@
                 <artifactId>cxf-rt-core</artifactId>
                 <version>${cxf.version}</version>
             </dependency>
-            <!-- Jetty is needed if you're are not using the CXFServlet -->
-            <dependency>
-                <groupId>org.apache.cxf</groupId>
-                <artifactId>cxf-rt-transports-http-jetty</artifactId>
-                <version>${cxf.version}</version>
-=======
+
             <!-- redis 相关-->
             <dependency>
                 <groupId>org.apache.commons</groupId>
@@ -427,7 +421,6 @@
                 <groupId>org.springframework.data</groupId>
                 <artifactId>spring-data-redis</artifactId>
                 <version>1.7.6.RELEASE</version>
->>>>>>> b291409b3b5af476a1883e6b83210375d4705baf
             </dependency>
         </dependencies>
     </dependencyManagement>
