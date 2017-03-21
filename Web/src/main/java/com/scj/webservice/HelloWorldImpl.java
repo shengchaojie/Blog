@@ -1,15 +1,9 @@
 package com.scj.webservice;
 
-import org.apache.cxf.endpoint.Client;
-import org.apache.cxf.jaxws.JaxWsProxyFactoryBean;
-import org.apache.cxf.jaxws.endpoint.dynamic.JaxWsDynamicClientFactory;
-
-import javax.jws.WebService;
-
 /**
  * Created by Administrator on 2017/2/7 0007.
  */
-@WebService(endpointInterface = "com.scj.webservice.HelloWorld")
+/*@WebService(endpointInterface = "com.scj.webservice.HelloWorld")
 public class HelloWorldImpl implements HelloWorld{
     private static final String WEBSERVICE_URL="http://localhost:8080/blog/services/HelloWorld?wsd";
 
@@ -66,4 +60,4 @@ public class HelloWorldImpl implements HelloWorld{
             e.printStackTrace();
         }
     }
-}
+}*/
